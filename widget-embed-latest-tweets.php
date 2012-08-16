@@ -2,8 +2,7 @@
 /*
  * Plugin Name: Widget embed lastest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/widget-embed-lastest-tweets
- * Description: A Widget to show your lastest tweets. Use the oEmbed methode and cach. It is simple, elegant and it works.
- * Juste type your user name and the munbers of tweets you want to show.
+ * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works. Just type your user name and the numbers of tweets you want to show.
  * Version: 0.1
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
@@ -55,20 +54,19 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 	 */
 	public function widget($args, $instance) {
 
+		$instance = wp_parse_args($instance, $this->defaut);
+
 		extract($args);
+		extract($instance);
 
 		$title = apply_filters('widget_title', $instance['title']);
-		$name_user = $instance['user-name'];
-		$nb_tweets = ( is_numeric($instance['nb-tweets']) ) ? $instance['nb-tweets'] : 3;
-		$maxwidth = ( is_numeric($instance['maxwidth']) ) ? $instance['maxwidth'] : '';
-
 
 		echo $before_widget;
 
 		if (!empty($title))
 			echo $before_title . $title . $after_title;
 
-		if ($name_user) {
+		if ($user_name) {
 
 			$last_tweet = get_transient('last_tweet');
 
@@ -77,10 +75,10 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 				$options = array(
 								'nb_tweets' => $nb_tweets,
 								'maxwidth'	=> $maxwidth,
-								'align'			=> $instance['align']
+								'align'			=> $align
 							);
 
-				$this->welt_set_tweet_transient($name_user, $options);
+				$this->welt_set_tweet_transient($user_name, $options);
 
 				$last_tweet = get_transient('last_tweet');
 			}
@@ -112,24 +110,28 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 	public function update($new_instance, $old_instance) {
 
 		$instance = $old_instance;
+		$instance = wp_parse_args($instance, $this->defaut);
 
-		$nb_tweet = strip_tags($new_instance['nb-tweets']);
+		$nb_tweet = strip_tags($new_instance['nb_tweets']);
 		$maxwidth = strip_tags($new_instance['maxwidth']);
 
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['user-name'] = strip_tags($new_instance['user-name']);
-		$instance['nb-tweets'] = is_numeric( $nb_tweet ) ? $nb_tweet : '';
-		$instance['maxwidth'] = is_numeric( $maxwidth ) ? $maxwidth : '';
+		$instance['user_name'] = strip_tags($new_instance['user_name']);
+
+		if( is_numeric( $nb_tweet ) )
+			$instance['nb_tweets'] = $nb_tweet;
+		if( is_numeric( $maxwidth ) )
+			$instance['maxwidth'] = $maxwidth;
 
 		if(in_array($new_instance['align'], $this->align_possible_value ))
 			$instance['align'] = $new_instance['align'];
 
 		$options = array(
-								'nb_tweets' => $instance['nb-tweets'],
+								'nb_tweets' => $instance['nb_tweets'],
 								'maxwidth'	=> $instance['maxwidth'],
 								'align'			=> $instance['align']
 							);
-		$this->welt_set_tweet_transient( $instance['user-name'], $options , true);
+		$this->welt_set_tweet_transient( $instance['user_name'], $options , true);
 
 		return $instance;
 	}
@@ -144,8 +146,8 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 	public function form($instance) {
 		if ($instance) {
 			$title = esc_attr($instance['title']);
-			$user_name = esc_attr($instance['user-name']);
-			$nb_tweets = esc_attr($instance['nb-tweets']);
+			$user_name = esc_attr($instance['user_name']);
+			$nb_tweets = esc_attr($instance['nb_tweets']);
 			$maxwidth = esc_attr($instance['maxwidth']);
 			$align = $instance['align'];
 		} else {
@@ -158,13 +160,13 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('user-name'); ?>"><?php _e('Twitter Usernam :', 'ab-welt-locales') ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('user-name'); ?>" name="<?php echo $this->get_field_name('user-name'); ?>" type="text" value="<?php echo $user_name; ?>" />
+			<label for="<?php echo $this->get_field_id('user_name'); ?>"><?php _e('Twitter Usernam :', 'ab-welt-locales') ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('user_name'); ?>" name="<?php echo $this->get_field_name('user_name'); ?>" type="text" value="<?php echo $user_name; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('nb-tweets'); ?>"><?php _e('Number of tweet to dislay :', 'ab-welt-locales') ?></label>
-			<input id="<?php echo $this->get_field_id('nb-tweets'); ?>" name="<?php echo $this->get_field_name('nb-tweets'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $nb_tweets; ?>" />
+			<label for="<?php echo $this->get_field_id('nb_tweets'); ?>"><?php _e('Number of tweet to dislay :', 'ab-welt-locales') ?></label>
+			<input id="<?php echo $this->get_field_id('nb_tweets'); ?>" name="<?php echo $this->get_field_name('nb_tweets'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $nb_tweets; ?>" />
 		</p>
 
 		<p>
@@ -183,6 +185,14 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 		<?php
 	}
 
+	/**
+	 * Cache the twitter json file. Twitter say "Store API responses in your application or on your site"
+	 * And the page load faster with this cache.
+	 *
+	 * @param string $user_name
+	 * @param array $options
+	 * @param boolean $update
+	 */
 	private function welt_set_tweet_transient( $user_name, $options, $update = false){
 
 		extract( $options );
@@ -194,6 +204,8 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 		if( !empty( $align ) )
 			$embed_options .= '&align=' . $align;
 
+		// We use the GET statuses/user_timeline to get the latest tweet
+		// https://dev.twitter.com/docs/api/1/get/statuses/oembed
 		$last_tweet = file_get_contents('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $user_name . '&count=' . $nb_tweets . '&include_rts=1');
 		$last_tweet = json_decode($last_tweet);
 
@@ -205,6 +217,8 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 			if( $update || get_transient('last_tweet_html_' . $id)){
 
 				$id = $tweet->id_str;
+				// We use the GET statuses/oembed API to get the html to display
+				// https://dev.twitter.com/docs/api/1/get/statuses/oembed
 				$last_tweet_html = file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . $embed_options);
 				$last_tweet_html = json_decode($last_tweet_html);
 				set_transient('last_tweet_html_' . $id, $last_tweet_html, 60 * 60 * 24);
