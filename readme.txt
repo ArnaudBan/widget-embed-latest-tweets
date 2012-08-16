@@ -25,6 +25,11 @@ However it assure you that all the twitter's recomandation to display your tweet
 
 If you want to help [the code is also on github](https://github.com/ArnaudBan/widget-embed-latest-tweets)
 
+== Screenshots ==
+
+1. Here is an example of how the tweets displays
+2. The admin part of the widget
+
 == Installation ==
 
 
