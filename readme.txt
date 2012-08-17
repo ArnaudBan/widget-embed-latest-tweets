@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: arnaudban
+Contributors: ArnaudBan
 Tags: twitter, widget, embed
 Requires at least: 3.4.1
 Tested up to: 3.4.1
