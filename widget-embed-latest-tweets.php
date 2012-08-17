@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Widget embed lastest Tweets
- * Plugin URI: http://www.arnaudbanvillet.com/widget-embed-lastest-tweets
+ * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works. Just type your user name and the numbers of tweets you want to show.
  * Version: 0.1
  * Author: Arnaud Banvillet
@@ -25,7 +25,7 @@
  */
 
 
-class Widget_Embed_Lastest_Tweets extends WP_Widget {
+class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 	var $defaut = array(
 			'nb-tweets' => 3,
@@ -39,7 +39,7 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 						'last_tweets', // Base ID
-						'Widget embed lastest Tweets', // Name
+						'Widget embed lastet Tweets', // Name
 						array('description' => __('Show your last tweets', 'ab-welt-locales'))// Args
 		);
 	}
@@ -78,9 +78,8 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 								'align'			=> $align
 							);
 
-				$this->welt_set_tweet_transient($user_name, $options);
+				$last_tweet = $this->welt_set_tweet_transient($user_name, $options);
 
-				$last_tweet = get_transient('last_tweet');
 			}
 
 
@@ -226,8 +225,10 @@ class Widget_Embed_Lastest_Tweets extends WP_Widget {
 			}
 
 		}
+
+		return $last_tweet;
 	}
 
 }
 
-add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Lastest_Tweets" );'));
+add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Latest_Tweets" );'));
