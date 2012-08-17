@@ -46,6 +46,12 @@ If you want to help [the code is also on github](https://github.com/ArnaudBan/wi
 
 Do not hesitate to ask questions on the forum
 
+== Screenshots ==
+
+1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
+the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
+2. This is the second screen shot
+
 == Changelog ==
 
 = 0.3.1 =
