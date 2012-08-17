@@ -44,11 +44,17 @@ Do not hesitate to ask questions on the forum
 
 == Changelog ==
 
+= 0.2 =
+Don't show Warning in case of error
+
 = 0.1 =
 This is the first version.
 Choose the number of tweet, the maximum width and alignment
 
 == Upgrade Notice ==
+
+= 0.2 =
+Don't show Warning in case of error
 
 = 0.1 =
 This is the first version. Try it and give me your impressions.
