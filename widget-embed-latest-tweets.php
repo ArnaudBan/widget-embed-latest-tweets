@@ -3,7 +3,7 @@
  * Plugin Name: Widget embed lastest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works. Just type your user name and the numbers of tweets you want to show.
- * Version: 0.1
+ * Version: 0.2
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
  * License: GPL2
@@ -78,18 +78,26 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 								'align'			=> $align
 							);
 
-				$last_tweet = $this->welt_set_tweet_transient($user_name, $options);
+
+				$this->welt_set_tweet_transient($user_name, $options);
+
+
+				$last_tweet = get_transient('last_tweet');
 
 			}
 
+			if( $last_tweet != false ){
 
-			foreach ($last_tweet as $tweet) {
+				foreach ($last_tweet as $tweet) {
 
-				$id = $tweet->id_str;
+					$id = $tweet->id_str;
 
-				$last_tweet_html = get_transient('last_tweet_html_' . $id);
+					$last_tweet_html = get_transient('last_tweet_html_' . $id);
 
-				echo $last_tweet_html->html;
+					echo $last_tweet_html->html;
+				}
+			} else {
+				_e('Error: Twitter did not respond. Please wait a few minutes and refresh this page.', 'ab-welt-locales');
 			}
 		}
 
@@ -205,8 +213,16 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		// We use the GET statuses/user_timeline to get the latest tweet
 		// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-		$last_tweet = file_get_contents('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $user_name . '&count=' . $nb_tweets . '&include_rts=1');
+		$last_tweet = @file_get_contents('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $user_name . '&count=' . $nb_tweets . '&include_rts=1');
+
+
+		if( $last_tweet == false ){
+			delete_transient( 'last_tweet' );
+			return;
+		}
+
 		$last_tweet = json_decode($last_tweet);
+
 
 		set_transient('last_tweet', $last_tweet, 60 * 5);
 
@@ -216,17 +232,16 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			if( $update || get_transient('last_tweet_html_' . $id)){
 
 				$id = $tweet->id_str;
+
 				// We use the GET statuses/oembed API to get the html to display
 				// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-				$last_tweet_html = file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . $embed_options);
+				$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . $embed_options);
 				$last_tweet_html = json_decode($last_tweet_html);
 				set_transient('last_tweet_html_' . $id, $last_tweet_html, 60 * 60 * 24);
 
 			}
 
 		}
-
-		return $last_tweet;
 	}
 
 }
