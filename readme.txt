@@ -13,12 +13,16 @@ Just type your Twitter username.
 == Description ==
 
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
-Just type your Twitter username.
+
+You can authentified your widget and get rid of the Twitter's API limitation from anonymous request. See the option page of the plugin : plugins -> Widget Embed Latest Tweets
 
 Options :
+
 * number of tweet to display
 * Maximum width
 * Alignment (left, right, center, none)
+* Choose your language
+* Hide the original message in the case that the embedded Tweet is a reply
 
 Note that with the oEmbed method you can not customise easily the display of your tweet.
 However it assure you that all the twitter's recomandation to display your tweet are respected, they are providing the code !
@@ -44,12 +48,20 @@ Do not hesitate to ask questions on the forum
 
 == Changelog ==
 
+= 0.3 =
+
+* You can authentified your widget and get read of the Twitter's API limitation from anonymous request
+* Choose your language
+* Hide the original message in the case that the embedded Tweet is a reply
+
 = 0.2 =
-Don't show Warning in case of error
+
+* Don't show Warning in case of error
 
 = 0.1 =
-This is the first version.
-Choose the number of tweet, the maximum width and alignment
+
+* This is the first version.
+* Choose the number of tweet, the maximum width and alignment
 
 == Upgrade Notice ==
 

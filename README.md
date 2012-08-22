@@ -1,9 +1,11 @@
 # Widget Embed Latest Tweets
 
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
-Just type your Twitter username.
+
+You can authentified your widget and get rid of the Twitter's API limitation from anonymous request. See the option page of the plugin : plugins -> Widget Embed Latest Tweets
 
 Options :
+
 * number of tweet to display
 * Maximum width
 * Alignment (left, right, center, none)

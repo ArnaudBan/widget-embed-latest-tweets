@@ -1,9 +1,9 @@
 <?php
 /*
- * Plugin Name: Widget embed lastest Tweets
+ * Plugin Name: Widget embed latest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works. Just type your user name and the numbers of tweets you want to show.
- * Version: 0.2
+ * Version: 0.3
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
  * License: GPL2
@@ -28,10 +28,15 @@
 class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 	var $defaut = array(
-			'nb-tweets' => 3,
-			'align'			=> 'none'
+			'title'				=> 'Last Tweet',
+			'count'				=> 3,
+			'align'				=> 'none',
+			'hide_thread' => true,
+			'lang'				=> 'en',
+			'include_rts'	=> true
 	);
-	var $align_possible_value = array('left', 'right', 'center', 'none');
+
+	var $align_possible_value = array('none', 'left', 'right', 'center');
 
 	/**
 	 * Register widget with WordPress.
@@ -39,8 +44,8 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 						'last_tweets', // Base ID
-						'Widget embed lastet Tweets', // Name
-						array('description' => __('Show your last tweets', 'ab-welt-locales'))// Args
+						'Widget embed latest Tweets', // Name
+						array('description' => __('Show your latest tweets', 'ab-welt-locales'))// Args
 		);
 	}
 
@@ -66,20 +71,14 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		if (!empty($title))
 			echo $before_title . $title . $after_title;
 
-		if ($user_name) {
+		if( !empty( $screen_name ) ){
 
 			$last_tweet = get_transient('last_tweet');
 
 			if (false === $last_tweet) {
 
-				$options = array(
-								'nb_tweets' => $nb_tweets,
-								'maxwidth'	=> $maxwidth,
-								'align'			=> $align
-							);
 
-
-				$this->welt_set_tweet_transient($user_name, $options);
+				$this->welt_set_tweet_transient( $instance );
 
 
 				$last_tweet = get_transient('last_tweet');
@@ -119,26 +118,28 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		$instance = $old_instance;
 		$instance = wp_parse_args($instance, $this->defaut);
 
-		$nb_tweet = strip_tags($new_instance['nb_tweets']);
-		$maxwidth = strip_tags($new_instance['maxwidth']);
-
 		$instance['title'] = strip_tags($new_instance['title']);
-		$instance['user_name'] = strip_tags($new_instance['user_name']);
 
-		if( is_numeric( $nb_tweet ) )
-			$instance['nb_tweets'] = $nb_tweet;
+		$instance['screen_name'] = strip_tags($new_instance['screen_name']);
+
+		$count = strip_tags($new_instance['count']);
+
+		if( is_numeric($count))
+			$instance['count'] = $count ;
+
+		$maxwidth = strip_tags($new_instance['maxwidth']);
 		if( is_numeric( $maxwidth ) )
 			$instance['maxwidth'] = $maxwidth;
+
 
 		if(in_array($new_instance['align'], $this->align_possible_value ))
 			$instance['align'] = $new_instance['align'];
 
-		$options = array(
-								'nb_tweets' => $instance['nb_tweets'],
-								'maxwidth'	=> $instance['maxwidth'],
-								'align'			=> $instance['align']
-							);
-		$this->welt_set_tweet_transient( $instance['user_name'], $options , true);
+		$instance['hide_thread'] = $new_instance['hide_thread'] == 'hide_thread';
+
+		$instance['lang'] = strip_tags($new_instance['lang']);
+
+		$this->welt_set_tweet_transient( $instance , true);
 
 		return $instance;
 	}
@@ -151,15 +152,10 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form($instance) {
-		if ($instance) {
-			$title = esc_attr($instance['title']);
-			$user_name = esc_attr($instance['user_name']);
-			$nb_tweets = esc_attr($instance['nb_tweets']);
-			$maxwidth = esc_attr($instance['maxwidth']);
-			$align = $instance['align'];
-		} else {
-			$title = 'Last Tweet';
-		}
+
+		$instance = wp_parse_args($instance, $this->defaut);
+		extract($instance);
+
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title :'); ?></label>
@@ -167,13 +163,13 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('user_name'); ?>"><?php _e('Twitter Usernam :', 'ab-welt-locales') ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('user_name'); ?>" name="<?php echo $this->get_field_name('user_name'); ?>" type="text" value="<?php echo $user_name; ?>" />
+			<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Usernam :', 'ab-welt-locales') ?></label>
+			<input class="widefat" id="<?php echo $this->get_field_id('screen_name'); ?>" name="<?php echo $this->get_field_name('screen_name'); ?>" type="text" value="<?php echo $screen_name; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('nb_tweets'); ?>"><?php _e('Number of tweet to dislay :', 'ab-welt-locales') ?></label>
-			<input id="<?php echo $this->get_field_id('nb_tweets'); ?>" name="<?php echo $this->get_field_name('nb_tweets'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $nb_tweets; ?>" />
+			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of tweet to dislay :', 'ab-welt-locales') ?></label>
+			<input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $count; ?>" />
 		</p>
 
 		<p>
@@ -189,61 +185,111 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 				<?php } ?>
 			</select>
 		</p>
+
+		<p>
+			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread :', 'ab-welt-locales') ?></label>
+			<input id="<?php echo $this->get_field_id('hide_thread'); ?>" name="<?php echo $this->get_field_name('hide_thread'); ?>" type="checkbox" <?php checked( $hide_thread ) ?> value="hide_thread"/>
+			<br />
+			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply') ?></span>
+		</p>
+
+		<p>
+			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language :', 'ab-welt-locales') ?></label>
+			<input id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" type="text" value="<?php echo $lang; ?>" size="2"/>
+			<br />
+			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french') ?></span>
+		</p>
+		<?php if( get_option('welt_twitter_authentification') ) { ?>
+			<p class="description">
+				<?php _e('You are authentified', 'ab-welt-locales'); ?>
+			</p>
 		<?php
+		}
+
+		//var_dump( get_option('welt_twitter_http_hreader') );
 	}
 
 	/**
 	 * Cache the twitter json file. Twitter say "Store API responses in your application or on your site"
 	 * And the page load faster with this cache.
 	 *
-	 * @param string $user_name
 	 * @param array $options
 	 * @param boolean $update
 	 */
-	private function welt_set_tweet_transient( $user_name, $options, $update = false){
+	private function welt_set_tweet_transient( $options, $update = false){
 
-		extract( $options );
+		extract($options);
 
-		$embed_options = '';
-
-		if( !empty( $maxwidth ) )
-			$embed_options .= '&maxwidth=' . $maxwidth;
-		if( !empty( $align ) )
-			$embed_options .= '&align=' . $align;
-
-		// We use the GET statuses/user_timeline to get the latest tweet
-		// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-		$last_tweet = @file_get_contents('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $user_name . '&count=' . $nb_tweets . '&include_rts=1');
+		$twitter_oauth_var = get_option('welt_twitter_oauth_var');
 
 
-		if( $last_tweet == false ){
+		//Check if wee use the authentification methode. We need to have all the key and secret.
+		$oauth_methode = ! in_array("", $twitter_oauth_var);
+
+
+		//The authentification methode
+		if( $oauth_methode ){
+			$connection = new TwitterOAuth($twitter_oauth_var[consumer_key], $twitter_oauth_var[consumer_secret], $twitter_oauth_var[token_key],$twitter_oauth_var[token_secret]);
+
+			$last_tweet = $connection->get('http://api.twitter.com/1/statuses/user_timeline.json', $options );
+
+		} else {
+			// We use the GET statuses/user_timeline to get the latest tweet
+			// https://dev.twitter.com/docs/api/1/get/statuses/oembed
+			$last_tweet = @file_get_contents('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $screen_name . '&count=' . $count . '&include_rts=1');
+			$last_tweet = json_decode($last_tweet);
+		}
+
+		if( $last_tweet == false || empty( $last_tweet )){
 			delete_transient( 'last_tweet' );
 			return;
 		}
-
-		$last_tweet = json_decode($last_tweet);
-
 
 		set_transient('last_tweet', $last_tweet, 60 * 5);
 
 		foreach ($last_tweet as $tweet) {
 
+			$id = $tweet->id_str;
+
 
 			if( $update || get_transient('last_tweet_html_' . $id)){
 
-				$id = $tweet->id_str;
 
-				// We use the GET statuses/oembed API to get the html to display
-				// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-				$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . $embed_options);
-				$last_tweet_html = json_decode($last_tweet_html);
+				if( $oauth_methode ){
+
+					$options['id'] = $id;
+					$last_tweet_html = $connection->get('https://api.twitter.com/1/statuses/oembed.json', $options);
+
+					$welt_twitter_http_hreader = $connection->http_info;
+
+					update_option('welt_twitter_authentification', true);
+
+				} else {
+
+					// We use the GET statuses/oembed API to get the html to display
+					// https://dev.twitter.com/docs/api/1/get/statuses/oembed
+					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . $embed_options);
+					$last_tweet_html = json_decode($last_tweet_html);
+
+					$welt_twitter_http_hreader = $http_response_header;
+
+					update_option('welt_twitter_authentification', false);
+				}
+
 				set_transient('last_tweet_html_' . $id, $last_tweet_html, 60 * 60 * 24);
 
 			}
 
 		}
-	}
 
+		update_option('welt_twitter_http_hreader', $welt_twitter_http_hreader);
+
+	}
 }
 
 add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Latest_Tweets" );'));
+
+//Files needed for the Twitter authentification
+require_once 'twitteroauth/OAuth.php';
+require_once 'twitteroauth/twitteroauth.php';
+require_once 'welt-option.php';
