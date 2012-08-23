@@ -48,6 +48,11 @@ Do not hesitate to ask questions on the forum
 
 == Changelog ==
 
+= 0.3.1 =
+
+* Debug the 0.3 version, sorry for that
+* Add the uninstall.php file for a clean unistallation of the plugin
+
 = 0.3 =
 
 * You can authentified your widget and get read of the Twitter's API limitation from anonymous request
