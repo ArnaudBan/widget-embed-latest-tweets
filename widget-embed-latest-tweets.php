@@ -224,7 +224,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 
 		//Check if wee use the authentification methode. We need to have all the key and secret.
-		$oauth_methode = ! in_array("", $twitter_oauth_var);
+		$oauth_methode = ($twitter_oauth_var == false) ? false : ! in_array("", $twitter_oauth_var);
 
 
 		//The authentification methode
@@ -268,7 +268,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 					// We use the GET statuses/oembed API to get the html to display
 					// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . $embed_options);
+					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang . '&maxwidth=' .$maxwidth);
 					$last_tweet_html = json_decode($last_tweet_html);
 
 					$welt_twitter_http_hreader = $http_response_header;
