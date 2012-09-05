@@ -37,7 +37,7 @@ If you want to help [the code is also on github](https://github.com/ArnaudBan/wi
 == Installation ==
 
 
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
+1. Upload `/widget-embed-latest-tweets/` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to the Widget page, drag and drop the "Widget embed lastest Tweets" widget where you want it to show
 4. Enter at least your Twitter username
@@ -53,6 +53,10 @@ the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.3.2 =
+
+* Debug : new Tweets not showing  
 
 = 0.3.1 =
 
