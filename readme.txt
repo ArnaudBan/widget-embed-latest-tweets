@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: ArnaudBan
 Tags: twitter, widget, embed
-Requires at least: 3.4.1
-Tested up to: 3.4.1
-Stable tag: trunk 
+Requires at least: 3
+Tested up to: 3.4.2
+Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -44,13 +44,21 @@ If you want to help [the code is also on github](https://github.com/ArnaudBan/wi
 
 == Frequently Asked Questions ==
 
-Do not hesitate to ask questions on the forum
+Do not hesitate to ask questions on the forum !
+
+= Is it possible to modifying link color ? =
+
+Sorry no. With the embed method from Twitter you can't really customise the display of your tweet.
+
+= Can the tweet's width be under 250px ? =
+
+No. Twitter says : This value [the width] is constrained to be between 250 and 550 pixels
 
 == Changelog ==
 
 = 0.3.2 =
 
-* Debug : new Tweets not showing  
+* Debug : new Tweets not showing
 
 = 0.3.1 =
 
