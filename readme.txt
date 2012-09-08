@@ -7,7 +7,7 @@ Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A Widget to show your latest tweets. It is simple, elegant and it works.
+A Widget to show your latest tweets.
 Just type your Twitter username.
 
 == Description ==
