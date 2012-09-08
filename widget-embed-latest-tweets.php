@@ -303,6 +303,11 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Latest_Tweets" );'));
 
 //Files needed for the Twitter authentification
-require_once 'twitteroauth/OAuth.php';
-require_once 'twitteroauth/twitteroauth.php';
+//Check if TwitterOAuth doesn't already existe
+if( ! class_exists( 'TwitterOAuth' )){
+
+	require_once 'twitteroauth/twitteroauth.php';
+
+}
+
 require_once 'welt-option.php';
