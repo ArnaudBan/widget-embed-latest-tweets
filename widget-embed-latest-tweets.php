@@ -2,8 +2,8 @@
 /*
  * Plugin Name: Widget embed latest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
- * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works. Just type your user name and the numbers of tweets you want to show.
- * Version: 0.3.2
+ * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. Just type your user name and the numbers of tweets you want to show.
+ * Version: 0.3.3
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
  * License: GPL2
@@ -128,7 +128,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			$instance['count'] = $count ;
 
 		$maxwidth = strip_tags($new_instance['maxwidth']);
-		if( is_numeric( $maxwidth ) )
+		if( is_numeric( $maxwidth ) || empty( $maxwidth ))
 			$instance['maxwidth'] = $maxwidth;
 
 
@@ -173,8 +173,11 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Maximum Width :', 'ab-welt-locales') ?></label>
-			<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="20" max="1000" value="<?php echo $maxwidth; ?>" />
+			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width :', 'ab-welt-locales') ?></label>
+			<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="250" max="550" value="<?php echo $maxwidth; ?>" />
+			<br />
+			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels') ?></span>
+
 		</p>
 
 		<p>
@@ -230,7 +233,6 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		//The authentification methode
 		if( $oauth_methode ){
 			$connection = new TwitterOAuth($twitter_oauth_var[consumer_key], $twitter_oauth_var[consumer_secret], $twitter_oauth_var[token_key],$twitter_oauth_var[token_secret]);
-
 			$last_tweet = $connection->get('http://api.twitter.com/1/statuses/user_timeline.json', $options );
 
 		} else {
@@ -258,6 +260,11 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 				if( $oauth_methode ){
 
 					$options['id'] = $id;
+
+					if( empty( $maxwidth) ){
+						unset( $options['maxwidth']);
+					}
+
 					$last_tweet_html = $connection->get('https://api.twitter.com/1/statuses/oembed.json', $options);
 
 					$welt_twitter_http_hreader = $connection->http_info;
@@ -268,7 +275,13 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 					// We use the GET statuses/oembed API to get the html to display
 					// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang . '&maxwidth=' .$maxwidth);
+					$option_string = 'id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang;
+
+					if( is_numeric( $maxwidth) ){
+						$option_string .= '&maxwidth=' . $maxwidth;
+					}
+
+					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?' . $option_string);
 					$last_tweet_html = json_decode($last_tweet_html);
 
 					$welt_twitter_http_hreader = $http_response_header;
@@ -290,6 +303,11 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Latest_Tweets" );'));
 
 //Files needed for the Twitter authentification
-require_once 'twitteroauth/OAuth.php';
-require_once 'twitteroauth/twitteroauth.php';
+//Check if TwitterOAuth doesn't already existe
+if( ! class_exists( 'TwitterOAuth' )){
+
+	require_once 'twitteroauth/twitteroauth.php';
+
+}
+
 require_once 'welt-option.php';
