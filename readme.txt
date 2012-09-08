@@ -56,6 +56,12 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.3.3 =
+
+* fix : you can now choose to leave the width empty
+* fix : Activation issue when another plugin use the same twitter authentication library
+* new FAQ
+
 = 0.3.2 =
 
 * Debug : new Tweets not showing
