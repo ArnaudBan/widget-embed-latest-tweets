@@ -56,6 +56,10 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.3.5 =
+
+* fix : Still showing undefined variables in debug mode
+
 = 0.3.4 =
 
 * fix : Showing lots of undefined variables in this widget in debug mode
