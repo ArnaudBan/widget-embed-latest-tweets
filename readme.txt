@@ -54,13 +54,12 @@ Sorry no. With the embed method from Twitter you can't really customise the disp
 
 No. Twitter says : This value [the width] is constrained to be between 250 and 550 pixels
 
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the directory of the stable readme.txt, so in this case, `/tags/4.3/screenshot-1.png` (or jpg, jpeg, gif)
-2. This is the second screen shot
-
 == Changelog ==
+
+= 0.3.4 =
+
+* fix : Showing lots of undefined variables in this widget in debug mode
+* new : The screenshot are no longer in the zip files : http://make.wordpress.org/plugins/2012/09/13/last-december-we-added-header-images-to-the/
 
 = 0.3.3 =
 

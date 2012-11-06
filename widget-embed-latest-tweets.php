@@ -3,7 +3,7 @@
  * Plugin Name: Widget embed latest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. Just type your user name and the numbers of tweets you want to show.
- * Version: 0.3.3
+ * Version: 0.3.4
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
  * License: GPL2
@@ -232,7 +232,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		//The authentification methode
 		if( $oauth_methode ){
-			$connection = new TwitterOAuth($twitter_oauth_var[consumer_key], $twitter_oauth_var[consumer_secret], $twitter_oauth_var[token_key],$twitter_oauth_var[token_secret]);
+			$connection = new TwitterOAuth($twitter_oauth_var['consumer_key'], $twitter_oauth_var['consumer_secret'], $twitter_oauth_var['token_key'],$twitter_oauth_var['token_secret']);
 			$last_tweet = $connection->get('http://api.twitter.com/1/statuses/user_timeline.json', $options );
 
 		} else {
