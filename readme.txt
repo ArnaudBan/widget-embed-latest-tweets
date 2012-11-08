@@ -56,6 +56,10 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.3.6 =
+
+* fix : You can now show two instance of the widget with different usernames
+
 = 0.3.5 =
 
 * fix : Still showing undefined variables in debug mode

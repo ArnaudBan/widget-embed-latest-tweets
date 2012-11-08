@@ -3,7 +3,7 @@
  * Plugin Name: Widget embed latest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. Just type your user name and the numbers of tweets you want to show.
- * Version: 0.3.5
+ * Version: 0.3.6
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
  * License: GPL2
@@ -73,15 +73,15 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		if( !empty( $screen_name ) ){
 
-			$last_tweet = get_transient('last_tweet');
+			$last_tweet = get_transient('last_tweet_' . $this->id);
 
 			if (false === $last_tweet) {
 
 
-				$this->welt_set_tweet_transient( $instance );
+				$this->welt_set_tweet_transient( $instance, false );
 
 
-				$last_tweet = get_transient('last_tweet');
+				$last_tweet = get_transient('last_tweet_' .$this->id);
 
 			}
 
@@ -89,9 +89,9 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 				foreach ($last_tweet as $tweet) {
 
-					$id = $tweet->id_str;
+					$tweet_id = $tweet->id_str;
 
-					$last_tweet_html = get_transient('last_tweet_html_' . $id);
+					$last_tweet_html = get_transient('last_tweet_html_' . $tweet_id);
 
 					echo $last_tweet_html->html;
 				}
@@ -139,7 +139,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		$instance['lang'] = strip_tags($new_instance['lang']);
 
-		$this->welt_set_tweet_transient( $instance , true);
+		$this->welt_set_tweet_transient( $instance , true );
 
 		return $instance;
 	}
@@ -245,7 +245,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			return;
 		}
 
-		set_transient('last_tweet', $last_tweet, 60 * 5);
+		set_transient('last_tweet_' . $this->id , $last_tweet, 60 * 5);
 
 		foreach ($last_tweet as $tweet) {
 
