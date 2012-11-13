@@ -2,8 +2,8 @@
 /*
  * Plugin Name: Widget embed latest Tweets
  * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
- * Description: A Widget to show your latest tweets. Use the oEmbed methode and some cache. Just type your user name and the numbers of tweets you want to show.
- * Version: 0.3.6
+ * Description: A Widget to show your latest Tweets. Use the oEmbed methode and some cache.
+ * Version: 0.3.7
  * Author: Arnaud Banvillet
  * Author URI: http://www.arnaudbanvillet.com
  * License: GPL2
@@ -28,11 +28,11 @@
 class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 	var $defaut = array(
-			'title'				=> 'Last Tweet',
-			'count'				=> 3,
-			'align'				=> 'none',
-			'hide_thread' => true,
-			'lang'				=> 'en',
+			'title'			=> 'Last Tweet',
+			'count'			=> 3,
+			'align'			=> 'none',
+			'hide_thread' 	=> true,
+			'lang'			=> 'en',
 			'include_rts'	=> true
 	);
 
@@ -45,7 +45,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		parent::__construct(
 						'last_tweets', // Base ID
 						'Widget embed latest Tweets', // Name
-						array('description' => __('Show your latest tweets', 'ab-welt-locales'))// Args
+						array('description' => __('Show your latest Tweets', 'ab-welt-locales'))// Args
 		);
 	}
 
@@ -158,22 +158,22 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title :'); ?></label>
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?> :</label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Usernam :', 'ab-welt-locales') ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id('screen_name'); ?>" name="<?php echo $this->get_field_name('screen_name'); ?>" type="text" value="<?php echo $screen_name; ?>" />
+			<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Username', 'ab-welt-locales') ?> :</label>
+			<input class="widefat" id="<?php echo $this->get_field_id('screen_name'); ?>" name="<?php echo $this->get_field_name('screen_name'); ?>" type="text" value="<?php if( isset($screen_name) ) echo $screen_name; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of tweet to dislay :', 'ab-welt-locales') ?></label>
+			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Tweet to display', 'ab-welt-locales') ?> :</label>
 			<input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $count; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width :', 'ab-welt-locales') ?></label>
+			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width') ?> :</label>
 			<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="250" max="550" value="<?php echo $maxwidth; ?>" />
 			<br />
 			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels') ?></span>
@@ -181,7 +181,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('align'); ?>"><?php _e('Align :', 'ab-welt-locales') ?></label>
+			<label for="<?php echo $this->get_field_id('align'); ?>"><?php _e('Alignment') ?> :</label>
 			<select id="<?php echo $this->get_field_id('align'); ?>" name="<?php echo $this->get_field_name('align'); ?>">
 				<?php foreach( $this->align_possible_value as $value ) { ?>
 					<option value="<?php echo $value ?>" <?php selected($value, $align, true) ?>><?php echo $value ?></option>
@@ -190,14 +190,14 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread :', 'ab-welt-locales') ?></label>
+			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread', 'ab-welt-locales') ?> :</label>
 			<input id="<?php echo $this->get_field_id('hide_thread'); ?>" name="<?php echo $this->get_field_name('hide_thread'); ?>" type="checkbox" <?php checked( $hide_thread ) ?> value="hide_thread"/>
 			<br />
 			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply') ?></span>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language :', 'ab-welt-locales') ?></label>
+			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language', 'ab-welt-locales') ?> :</label>
 			<input id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" type="text" value="<?php echo $lang; ?>" size="2"/>
 			<br />
 			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french') ?></span>

@@ -84,7 +84,7 @@ function welt_twitter_oauth_section_text() {
 function welt_twitter_consumer_key_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$consumer_key = $twitter_oauth_var[consumer_key];
+	$consumer_key = $twitter_oauth_var['consumer_key'];
 	//Attention le "name" du input doit correspondre au nom de l'option
 	?>
 	<input id='welt_twitter_oauth_var[consumer_key]' name='welt_twitter_oauth_var[consumer_key]' type='text' value='<?php echo $consumer_key; ?>' class="widefat"/>
@@ -93,7 +93,7 @@ function welt_twitter_consumer_key_display() {
 function welt_twitter_consumer_secret_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$consumer_secret = $twitter_oauth_var[consumer_secret];
+	$consumer_secret = $twitter_oauth_var['consumer_secret'];
 	//Attention le "name" du input doit correspondre au nom de l'option
 	?>
 	<input id='welt_twitter_oauth_var[consumer_secret]' name='welt_twitter_oauth_var[consumer_secret]' type='text' value='<?php echo $consumer_secret; ?>' class="widefat"/>
@@ -102,7 +102,7 @@ function welt_twitter_consumer_secret_display() {
 function welt_twitter_access_token_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$token_key = $twitter_oauth_var[token_key];
+	$token_key = $twitter_oauth_var['token_key'];
 	//Attention le "name" du input doit correspondre au nom de l'option
 	?>
 	<input id='welt_twitter_oauth_var[token_key]' name='welt_twitter_oauth_var[token_key]' type='text' value='<?php echo $token_key; ?>' class="widefat"/>
@@ -111,7 +111,7 @@ function welt_twitter_access_token_display() {
 function welt_twitter_access_token_secret_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$token_secret = $twitter_oauth_var[token_secret];
+	$token_secret = $twitter_oauth_var['token_secret'];
 	//Attention le "name" du input doit correspondre au nom de l'option
 	?>
 	<input id='welt_twitter_oauth_var[token_secret]' name='welt_twitter_oauth_var[token_secret]' type='text' value='<?php echo $token_secret; ?>' class="widefat"/>

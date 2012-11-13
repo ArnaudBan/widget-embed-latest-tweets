@@ -7,31 +7,31 @@ Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A Widget to show your latest tweets.
+A Widget to show your latest Tweets.
 Just type your Twitter username.
 
 == Description ==
 
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
 
-You can authentified your widget and get rid of the Twitter's API limitation from anonymous request. See the option page of the plugin : plugins -> Widget Embed Latest Tweets
+You can authentify your widget and get rid of the Twitter's API limitation from anonymous request. See the option page of the plugin : plugins -> Widget Embed Latest Tweets
 
 Options :
 
-* number of tweet to display
+* Number of Tweet to display
 * Maximum width
 * Alignment (left, right, center, none)
 * Choose your language
 * Hide the original message in the case that the embedded Tweet is a reply
 
-Note that with the oEmbed method you can not customise easily the display of your tweet.
-However it assure you that all the twitter's recomandation to display your tweet are respected, they are providing the code !
+Note that with the oEmbed method you can not customise easily the display of your Tweet.
+However, the oEmbed method ensures you that all Twitter's recommendations for displaying your tweet are respected, they are providing the code !
 
 If you want to help [the code is also on github](https://github.com/ArnaudBan/widget-embed-latest-tweets)
 
 == Screenshots ==
 
-1. Here is an example of how the tweets displays
+1. Here is an example of how the Tweets displays
 2. The admin part of the widget
 
 == Installation ==
@@ -55,6 +55,10 @@ Sorry no. With the embed method from Twitter you can't really customise the disp
 No. Twitter says : This value [the width] is constrained to be between 250 and 550 pixels
 
 == Changelog ==
+
+= 0.3.7 =
+
+* Just some typo fixes
 
 = 0.3.6 =
 
