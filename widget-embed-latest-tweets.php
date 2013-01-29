@@ -74,7 +74,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			echo $before_title . $title . $after_title;
 
 		if( !empty( $screen_name ) )
-			echo '<div id="' . $this->id . '" class="welt-tweet-wrapper"></div>';
+			echo '<div id="welt-' . $this->id . '" class="welt-tweet-wrapper"></div>';
 
 		echo $after_widget;
 	}
@@ -323,12 +323,12 @@ add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
  * Enqueue welt script and Twitter Script
  */
 function welt_enqueue_scripts(){
-	// Twitter
-	wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', '', '', true );
-
 	// welt
 	wp_enqueue_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
 	wp_localize_script( 'welt_script', 'ajaxurl', admin_url('admin-ajax.php') );
+	// Twitter
+	wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', '', '', true );
+
 
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
