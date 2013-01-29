@@ -45,7 +45,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct(
-						'last_tweets', // Base ID
+						'welt_last_tweets', // Base ID
 						'Widget embed latest Tweets', // Name
 						array('description' => __('Show your latest Tweets', 'ab-welt-locales'))// Args
 		);
@@ -116,7 +116,8 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		$instance['lang'] = strip_tags($new_instance['lang']);
 
-		$this->welt_set_tweet_transient( $instance , true );
+		//When everythings is check, set the transient
+		welt_set_tweet_transient( $this->id, $instance , true );
 
 		return $instance;
 	}
@@ -193,85 +194,87 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		}
 	}
 
-	/**
-	 * Cache the twitter json file. Twitter say "Store API responses in your application or on your site"
-	 * And the page load faster with this cache.
-	 *
-	 * @param array $options
-	 * @param boolean $update
-	 */
-	private function welt_set_tweet_transient( $options, $update = false){
-
-		extract($options);
-
-		$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-
-
-		//Check if wee use the authentification methode. We need to have all the key and secret.
-		$oauth_methode = is_array( $twitter_oauth_var ) && count($twitter_oauth_var) == 4;
-		update_option('welt_twitter_authentification', $oauth_methode);
-
-		//The authentification methode
-		if( $oauth_methode ){
-			$connection = new TwitterOAuth($twitter_oauth_var['consumer_key'], $twitter_oauth_var['consumer_secret'], $twitter_oauth_var['token_key'],$twitter_oauth_var['token_secret']);
-			$last_tweet = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json', $options );
-
-		} else {
-			// We use the GET statuses/user_timeline to get the latest tweet
-			$last_tweet = @file_get_contents( 'http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $screen_name . '&count=' . $count . '&include_rts=1' );
-			$last_tweet = json_decode($last_tweet);
-		}
-
-		if( $last_tweet == false || empty( $last_tweet )){
-			delete_transient( 'last_tweet_' . $this->id );
-			return;
-		}
-
-		set_transient('last_tweet_' . $this->id , $last_tweet, 60 * 5);
-
-		foreach ($last_tweet as $tweet) {
-
-			$id = $tweet->id_str;
-
-
-			if( $update || ! get_transient('last_tweet_html_' . $id)){
-
-
-				if( $oauth_methode ){
-
-					$options['id'] = $id;
-
-					if( empty( $maxwidth) ){
-						unset( $options['maxwidth']);
-					}
-
-					$last_tweet_html = $connection->get('https://api.twitter.com/1.1/statuses/oembed.json', $options);
-
-
-				} else {
-
-					// We use the GET statuses/oembed API to get the html to display
-					// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-					$option_string = 'id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang . '&hide_media=' . $hide_media;
-
-					if( is_numeric( $maxwidth) ){
-						$option_string .= '&maxwidth=' . $maxwidth;
-					}
-
-					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?' . $option_string);
-					$last_tweet_html = json_decode($last_tweet_html);
-
-				}
-
-				set_transient('last_tweet_html_' . $id, $last_tweet_html, 60 * 60 * 24);
-
-			}
-
-		}
-	}
 }
 
 add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Latest_Tweets" );'));
+
+
+/**
+	* Cache the twitter json file. Twitter say "Store API responses in your application or on your site"
+	* And the page load faster with this cache.
+	*
+	* @param array $options
+	* @param boolean $update
+	*/
+function welt_set_tweet_transient( $widget_id, $options, $update = false){
+
+	extract($options);
+
+	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
+
+
+	//Check if wee use the authentification methode. We need to have all the key and secret.
+	$oauth_methode = is_array( $twitter_oauth_var ) && count($twitter_oauth_var) == 4;
+	update_option('welt_twitter_authentification', $oauth_methode);
+
+	//The authentification methode
+	if( $oauth_methode ){
+		$connection = new TwitterOAuth($twitter_oauth_var['consumer_key'], $twitter_oauth_var['consumer_secret'], $twitter_oauth_var['token_key'],$twitter_oauth_var['token_secret']);
+		$last_tweet = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json', $options );
+
+	} else {
+		// We use the GET statuses/user_timeline to get the latest tweet
+		$last_tweet = @file_get_contents( 'http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $screen_name . '&count=' . $count . '&include_rts=1' );
+		$last_tweet = json_decode($last_tweet);
+	}
+
+	if( $last_tweet == false || empty( $last_tweet )){
+		delete_transient( 'last_tweet_' . $widget_id );
+		return;
+	}
+
+	set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
+
+	foreach ($last_tweet as $tweet) {
+
+		$id = $tweet->id_str;
+
+
+		if( $update || ! get_transient('last_tweet_html_' . $id)){
+
+
+			if( $oauth_methode ){
+
+				$options['id'] = $id;
+
+				if( empty( $maxwidth) ){
+					unset( $options['maxwidth']);
+				}
+
+				$last_tweet_html = $connection->get('https://api.twitter.com/1.1/statuses/oembed.json', $options);
+
+
+			} else {
+
+				// We use the GET statuses/oembed API to get the html to display
+				// https://dev.twitter.com/docs/api/1/get/statuses/oembed
+				$option_string = 'id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang . '&hide_media=' . $hide_media;
+
+				if( is_numeric( $maxwidth) ){
+					$option_string .= '&maxwidth=' . $maxwidth;
+				}
+
+				$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?' . $option_string);
+				$last_tweet_html = json_decode($last_tweet_html);
+
+			}
+
+			set_transient('last_tweet_html_' . $id, $last_tweet_html, 60 * 60 * 24);
+
+		}
+
+	}
+}
 
 
 /**
@@ -288,9 +291,15 @@ function welt_display_tweets( ){
 
 	if( false === $last_tweet ) {
 
-		// Il faut lui envoyer les paramétre du widget
-		//$this->welt_set_tweet_transient( $instance, false );
+		// Get the widget instance
+		$all_instance_widget = get_option('widget_welt_last_tweets');
 
+		$widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
+
+		$instance = $all_instance_widget[$widget_real_id];
+
+		// Set the transient for this widget
+		welt_set_tweet_transient( $widget_id, $instance, false );
 
 		$last_tweet = get_transient('last_tweet_' .$widget_id);
 
@@ -327,8 +336,7 @@ function welt_enqueue_scripts(){
 	wp_enqueue_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
 	wp_localize_script( 'welt_script', 'ajaxurl', admin_url('admin-ajax.php') );
 	// Twitter
-	wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', '', '', true );
-
+	wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', array( 'welt_script' ), '', true );
 
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
