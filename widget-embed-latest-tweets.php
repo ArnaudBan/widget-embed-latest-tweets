@@ -28,11 +28,12 @@
 class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 	var $defaut = array(
-			'title'			=> 'Last Tweet',
-			'count'			=> 3,
-			'align'			=> 'none',
-			'hide_thread' 	=> true,
-			'lang'			=> 'en',
+			'title'				=> 'Last Tweet',
+			'count'				=> 3,
+			'align'				=> 'none',
+			'hide_thread'	=> true,
+			'omit_script'	=> true,
+			'lang'				=> 'en',
 			'include_rts'	=> true
 	);
 
@@ -64,18 +65,20 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		extract($args);
 		extract($instance);
 
+		wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', '', '', true );
+
 		$title = apply_filters('widget_title', $instance['title']);
 
 		echo $before_widget;
 
-		if (!empty($title))
+		if ( !empty( $title ) )
 			echo $before_title . $title . $after_title;
 
 		if( !empty( $screen_name ) ){
 
 			$last_tweet = get_transient('last_tweet_' . $this->id);
 
-			if (false === $last_tweet) {
+			if( false === $last_tweet ) {
 
 
 				$this->welt_set_tweet_transient( $instance, false );
