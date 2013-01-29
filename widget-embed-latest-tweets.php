@@ -66,8 +66,6 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		extract($args);
 		extract($instance);
 
-		wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', '', '', true );
-
 		$title = apply_filters('widget_title', $instance['title']);
 
 		echo $before_widget;
@@ -75,33 +73,8 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		if ( !empty( $title ) )
 			echo $before_title . $title . $after_title;
 
-		if( !empty( $screen_name ) ){
-
-			$last_tweet = get_transient('last_tweet_' . $this->id);
-
-			if( false === $last_tweet ) {
-
-				$this->welt_set_tweet_transient( $instance, false );
-
-
-				$last_tweet = get_transient('last_tweet_' .$this->id);
-
-			}
-
-			if( $last_tweet != false ){
-
-				foreach ($last_tweet as $tweet) {
-
-					$tweet_id = $tweet->id_str;
-
-					$last_tweet_html = get_transient('last_tweet_html_' . $tweet_id);
-
-					echo $last_tweet_html->html;
-				}
-			} else {
-				_e('Error: Twitter did not respond. Please wait a few minutes and refresh this page.', 'ab-welt-locales');
-			}
-		}
+		if( !empty( $screen_name ) )
+			echo '<div id="' . $this->id . '" class="welt-tweet-wrapper"></div>';
 
 		echo $after_widget;
 	}
@@ -299,6 +272,66 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 }
 
 add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_Latest_Tweets" );'));
+
+
+/**
+ * The function callback in ajax to display Tweet
+ */
+function welt_display_tweets( ){
+
+	$widget_id = $_POST['widget_id'];
+
+	$tweet_html = '';
+
+	$last_tweet = get_transient('last_tweet_' . $widget_id);
+
+
+	if( false === $last_tweet ) {
+
+		// Il faut lui envoyer les paramétre du widget
+		//$this->welt_set_tweet_transient( $instance, false );
+
+
+		$last_tweet = get_transient('last_tweet_' .$widget_id);
+
+	}
+
+	if( $last_tweet != false ){
+
+		foreach ($last_tweet as $tweet) {
+
+			$tweet_id = $tweet->id_str;
+
+			$last_tweet_html = get_transient('last_tweet_html_' . $tweet_id);
+
+			$tweet_html .= $last_tweet_html->html;
+		}
+	} else {
+		$tweet_html = __('Error: Twitter did not respond. Please wait a few minutes and refresh this page.', 'ab-welt-locales');
+	}
+
+
+	echo $tweet_html;
+	die;
+}
+
+add_action('wp_ajax_welt_display_tweets', 'welt_display_tweets');
+add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
+
+
+/**
+ * Enqueue welt script and Twitter Script
+ */
+function welt_enqueue_scripts(){
+	// Twitter
+	wp_enqueue_script('welt_twitter', '//platform.twitter.com/widgets.js', '', '', true );
+
+	// welt
+	wp_enqueue_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
+	wp_localize_script( 'welt_script', 'ajaxurl', admin_url('admin-ajax.php') );
+
+}
+add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
 
 //Files needed for the Twitter authentification
 //Check if TwitterOAuth doesn't already existe
