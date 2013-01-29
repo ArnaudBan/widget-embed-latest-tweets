@@ -120,7 +120,13 @@ function welt_twitter_access_token_secret_display() {
 
 function welt_twitter_oauth_var_validate($twitter_variable) {
 
-	$valid_option = $twitter_variable;
+	$valid_option = array();
+
+	foreach ($twitter_variable as $option => $value) {
+		if( !empty( $value ) ){
+			$valid_option[$option] = $value;
+		}
+	}
 
 	return $valid_option;
 }

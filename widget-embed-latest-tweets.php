@@ -34,7 +34,8 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			'hide_thread'	=> true,
 			'omit_script'	=> true,
 			'lang'				=> 'en',
-			'include_rts'	=> true
+			'include_rts'	=> true,
+			'hide_media'	=> true
 	);
 
 	var $align_possible_value = array('none', 'left', 'right', 'center');
@@ -79,7 +80,6 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			$last_tweet = get_transient('last_tweet_' . $this->id);
 
 			if( false === $last_tweet ) {
-
 
 				$this->welt_set_tweet_transient( $instance, false );
 
@@ -139,6 +139,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			$instance['align'] = $new_instance['align'];
 
 		$instance['hide_thread'] = $new_instance['hide_thread'] == 'hide_thread';
+		$instance['hide_media'] = $new_instance['hide_media'] == 'hide_media';
 
 		$instance['lang'] = strip_tags($new_instance['lang']);
 
@@ -196,7 +197,13 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread', 'ab-welt-locales') ?> :</label>
 			<input id="<?php echo $this->get_field_id('hide_thread'); ?>" name="<?php echo $this->get_field_name('hide_thread'); ?>" type="checkbox" <?php checked( $hide_thread ) ?> value="hide_thread"/>
 			<br />
-			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply') ?></span>
+			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply', 'ab-welt-locales') ?></span>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id('hide_media'); ?>"><?php _e('Hide Media', 'ab-welt-locales') ?> :</label>
+			<input id="<?php echo $this->get_field_id('hide_media'); ?>" name="<?php echo $this->get_field_name('hide_media'); ?>" type="checkbox" <?php checked( $hide_media ) ?> value="hide_media"/>
+			<br />
+			<span class="description"><?php _e('Hide the images in the Tweet' , 'ab-welt-locales') ?></span>
 		</p>
 
 		<p>
@@ -228,23 +235,22 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 
 		//Check if wee use the authentification methode. We need to have all the key and secret.
-		$oauth_methode = ($twitter_oauth_var == false) ? false : ! in_array("", $twitter_oauth_var);
-
+		$oauth_methode = is_array( $twitter_oauth_var ) && count($twitter_oauth_var) == 4;
+		update_option('welt_twitter_authentification', $oauth_methode);
 
 		//The authentification methode
 		if( $oauth_methode ){
 			$connection = new TwitterOAuth($twitter_oauth_var['consumer_key'], $twitter_oauth_var['consumer_secret'], $twitter_oauth_var['token_key'],$twitter_oauth_var['token_secret']);
-			$last_tweet = $connection->get('http://api.twitter.com/1/statuses/user_timeline.json', $options );
+			$last_tweet = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json', $options );
 
 		} else {
 			// We use the GET statuses/user_timeline to get the latest tweet
-			// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-			$last_tweet = @file_get_contents('http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $screen_name . '&count=' . $count . '&include_rts=1');
+			$last_tweet = @file_get_contents( 'http://api.twitter.com/1/statuses/user_timeline.json?screen_name=' . $screen_name . '&count=' . $count . '&include_rts=1' );
 			$last_tweet = json_decode($last_tweet);
 		}
 
 		if( $last_tweet == false || empty( $last_tweet )){
-			delete_transient( 'last_tweet' );
+			delete_transient( 'last_tweet_' . $this->id );
 			return;
 		}
 
@@ -266,16 +272,14 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 						unset( $options['maxwidth']);
 					}
 
-					$last_tweet_html = $connection->get('https://api.twitter.com/1/statuses/oembed.json', $options);
+					$last_tweet_html = $connection->get('https://api.twitter.com/1.1/statuses/oembed.json', $options);
 
-
-					update_option('welt_twitter_authentification', true);
 
 				} else {
 
 					// We use the GET statuses/oembed API to get the html to display
 					// https://dev.twitter.com/docs/api/1/get/statuses/oembed
-					$option_string = 'id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang;
+					$option_string = 'id=' . $id . '&align=' . $align . '&hide_thread='. $hide_thread .'&lang=' . $lang . '&hide_media=' . $hide_media;
 
 					if( is_numeric( $maxwidth) ){
 						$option_string .= '&maxwidth=' . $maxwidth;
@@ -284,7 +288,6 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 					$last_tweet_html = @file_get_contents('https://api.twitter.com/1/statuses/oembed.json?' . $option_string);
 					$last_tweet_html = json_decode($last_tweet_html);
 
-					update_option('welt_twitter_authentification', false);
 				}
 
 				set_transient('last_tweet_html_' . $id, $last_tweet_html, 60 * 60 * 24);
@@ -292,7 +295,6 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			}
 
 		}
-
 	}
 }
 
