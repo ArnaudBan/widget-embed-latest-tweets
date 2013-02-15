@@ -2,13 +2,17 @@
 
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
 
-You can authentified your widget and get rid of the Twitter's API limitation from anonymous request. See the option page of the plugin : plugins -> Widget Embed Latest Tweets
+This plugin uses the Twitter API version 1.1. You have to authentify yourself !
+Visit the option page "Plugins->Widget Embed Last Plugin" to do so.
 
 Options :
 
-* number of tweet to display
+* Number of Tweet to display
 * Maximum width
 * Alignment (left, right, center, none)
+* Choose your language
+* Hide the original message in the case that the embedded Tweet is a reply
+* Hide images in the Tweet
 
 Note that with the oEmbed method you can not customise easily the display of your tweet.
 However it assure you that all the twitter's recomandation to display your tweet are respected, they are providing the code !

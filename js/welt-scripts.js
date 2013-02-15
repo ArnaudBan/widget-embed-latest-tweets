@@ -23,7 +23,6 @@ jQuery(document).ready( function(){
 			data,
 			function(response) {
 				current_widget.append(response);
-				//jQuery.getScript('//platform.twitter.com/widgets.js');
 			}
 		);
 
