@@ -1,11 +1,11 @@
 <?php
 /*
  * Plugin Name: Widget embed latest Tweets
- * Plugin URI: http://www.arnaudbanvillet.com/blog/portfolio/widget-embed-latest-tweets/
+ * Plugin URI: http://arnaudban.me/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest Tweets. Use the oEmbed methode and some cache. Visit the option page "Plugins->Widget Embed Last Plugin" to authentify yourself
- * Version: 0.4
+ * Version: 0.4.1
  * Author: Arnaud Banvillet
- * Author URI: http://www.arnaudbanvillet.com
+ * Author URI: http://arnaudban.me
  * License: GPL2
  *
  * Copyright 2012  Arnaud Banvillet  (email : arnaud.banvillet@gmail.com )
@@ -28,13 +28,14 @@
 class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 	var $defaut = array(
-			'title'				=> 'Last Tweet',
-			'count'				=> 3,
-			'align'				=> 'none',
-			'hide_thread'	=> true,
-			'lang'				=> 'en',
-			'include_rts'	=> true,
-			'hide_media'	=> true
+			'title'            => 'Latest Tweets',
+			'count'            => 3,
+			'align'            => 'none',
+			'hide_thread'      => true,
+			'lang'             => 'en',
+			'include_rts'      => true,
+			'hide_media'       => true,
+			'exclude_replies'  => false,
 	);
 
 	var $align_possible_value = array('none', 'left', 'right', 'center');
@@ -112,6 +113,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		$instance['hide_thread'] = $new_instance['hide_thread'] == 'hide_thread';
 		$instance['hide_media'] = $new_instance['hide_media'] == 'hide_media';
+		$instance['exclude_replies'] = $new_instance['exclude_replies'] == 'exclude_replies';
 
 		$instance['lang'] = strip_tags($new_instance['lang']);
 
@@ -177,6 +179,13 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			<input id="<?php echo $this->get_field_id('hide_media'); ?>" name="<?php echo $this->get_field_name('hide_media'); ?>" type="checkbox" <?php checked( $hide_media ) ?> value="hide_media"/>
 			<br />
 			<span class="description"><?php _e('Hide the images in the Tweet' , 'ab-welt-locales') ?></span>
+		</p>
+
+		<p>
+			<label for="<?php echo $this->get_field_id('exclude_replies'); ?>"><?php _e('Exclude replies', 'ab-welt-locales') ?> :</label>
+			<input id="<?php echo $this->get_field_id('exclude_replies'); ?>" name="<?php echo $this->get_field_name('exclude_replies'); ?>" type="checkbox" <?php checked( $exclude_replies ) ?> value="exclude_replies"/>
+			<br />
+			<span class="description"><?php _e('They will not show but they will count in the number of tweets' , 'ab-welt-locales') ?></span>
 		</p>
 
 		<p>

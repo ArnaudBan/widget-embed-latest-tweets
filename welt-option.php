@@ -63,7 +63,7 @@ function welt_twitter_oauth_section_text() {
 	?>
 	<h4><?php _e('Why', 'ab-welt-locales'); ?> ?</h4>
 	<p>
-		<?php _e('In order to avoid the Twitter\'s API limitation from anonymous request.', 'ab-welt-locales'); ?>
+		<?php _e('Twitter\'s API version 1.1 require it', 'ab-welt-locales'); ?>
 	</p>
 
 	<h4><?php _e('How', 'ab-welt-locales'); ?> ?</h4>

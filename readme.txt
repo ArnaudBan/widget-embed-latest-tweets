@@ -8,7 +8,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 A Widget to show your latest Tweets.
-Visit the option page "Plugins->Widget Embed Last Plugin" to authentify yourself
+Visit the option page "Plugins->Widget Embed Latest Tweet" to authentify yourself
 
 
 == Description ==
@@ -16,7 +16,7 @@ Visit the option page "Plugins->Widget Embed Last Plugin" to authentify yourself
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
 
 This plugin uses the Twitter API version 1.1. You have to authentify yourself !
-Visit the option page "Plugins->Widget Embed Last Plugin" to do so.
+Visit the option page "Plugins->Widget Embed Latest Tweet" to do so.
 
 Options :
 
@@ -58,6 +58,11 @@ Sorry no. With the embed method from Twitter you can't really customise the disp
 No. Twitter says : This value [the width] is constrained to be between 250 and 550 pixels
 
 == Changelog ==
+
+= 0.4.1 =
+
+* Add 'exclude_replies' option
+* typo fixes
 
 = 0.4 =
 
