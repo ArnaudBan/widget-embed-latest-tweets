@@ -18,10 +18,11 @@ jQuery(document).ready( function(){
 			widget_id: widget_id
 		};
 
-		jQuery.post(
-			ajaxurl,
-			data,
-			function(response) {
+		jQuery.ajax({
+			type: "POST",
+			url: welt_ajaxurl,
+			data : data
+		}).done(function(response) {
 				current_widget.append(response);
 			}
 		);

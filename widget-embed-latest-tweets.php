@@ -328,7 +328,7 @@ add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
 function welt_enqueue_scripts(){
 	// welt
 	wp_enqueue_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
-	wp_localize_script( 'welt_script', 'ajaxurl', admin_url('admin-ajax.php') );
+	wp_localize_script( 'welt_script', 'welt_ajaxurl', admin_url('admin-ajax.php') );
 
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
