@@ -341,4 +341,16 @@ if( ! class_exists( 'TwitterOAuth' )){
 
 }
 
+
+// Option page
 require_once 'welt-option.php';
+
+// Add settings link on plugin page
+function welt_add_settings_link($links) {
+  $settings_link = '<a href="plugins.php?page=welt_options_page">' . __('Settings') . '</a>';
+  array_unshift($links, $settings_link);
+  return $links;
+}
+
+$plugin = plugin_basename(__FILE__);
+add_filter("plugin_action_links_$plugin", 'welt_add_settings_link' );
