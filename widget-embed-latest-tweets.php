@@ -61,6 +61,10 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 	 */
 	public function widget($args, $instance) {
 
+		wp_enqueue_script('welt_script');
+		wp_localize_script( 'welt_script', 'weltAjaxurl', admin_url('admin-ajax.php') );
+
+
 		$instance = wp_parse_args($instance, $this->defaut);
 
 		extract($args);
@@ -327,8 +331,7 @@ add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
  */
 function welt_enqueue_scripts(){
 	// welt
-	wp_enqueue_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
-	wp_localize_script( 'welt_script', 'ajaxurl', admin_url('admin-ajax.php') );
+	wp_register_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
 
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');

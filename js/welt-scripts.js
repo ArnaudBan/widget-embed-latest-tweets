@@ -19,7 +19,7 @@ jQuery(document).ready( function(){
 		};
 
 		jQuery.post(
-			ajaxurl,
+			weltAjaxurl,
 			data,
 			function(response) {
 				current_widget.append(response);
