@@ -48,7 +48,7 @@ function welt_admin_init() {
 
 	//On créer une section dans nos options
 	//add_settings_section( $id, $title, $callback, $page );
-	add_settings_section('welt_twitter_oauth_section', 'Twitter connection', 'welt_twitter_oauth_section_text', 'welt_options_page');
+	add_settings_section('welt_twitter_oauth_section', __('Twitter connection', 'ab-welt-locales'), 'welt_twitter_oauth_section_text', 'welt_options_page');
 
 	//Register a settings field to a settings page and section.
 	//add_settings_field( $id, $title, $callback, $page, $section, $args );

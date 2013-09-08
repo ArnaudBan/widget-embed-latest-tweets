@@ -159,7 +159,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width') ?> :</label>
 			<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="250" max="550" value="<?php echo $maxwidth; ?>" />
 			<br />
-			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels') ?></span>
+			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels', 'ab-welt-locales') ?></span>
 
 		</p>
 
@@ -196,7 +196,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language', 'ab-welt-locales') ?> :</label>
 			<input id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" type="text" value="<?php echo $lang; ?>" size="2"/>
 			<br />
-			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french') ?></span>
+			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french', 'ab-welt-locales') ?></span>
 		</p>
 		<?php
 	}
@@ -336,17 +336,24 @@ function welt_enqueue_scripts(){
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
 
-//Files needed for the Twitter authentification
-//Check if TwitterOAuth doesn't already existe
-if( ! class_exists( 'TwitterOAuth' )){
+function welt_plugin_init() {
 
-	require_once 'twitteroauth/twitteroauth.php';
+	//Files needed for the Twitter authentification
+	//Check if TwitterOAuth doesn't already existe
+	if( ! class_exists( 'TwitterOAuth' )){
 
+		require_once 'twitteroauth/twitteroauth.php';
+
+	}
+
+  load_plugin_textdomain( 'ab-welt-locales', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
+add_action('plugins_loaded', 'welt_plugin_init');
 
 
 // Option page
 require_once 'welt-option.php';
+
 
 // Add settings link on plugin page
 function welt_add_settings_link($links) {
