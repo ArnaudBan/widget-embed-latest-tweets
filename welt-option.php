@@ -29,10 +29,9 @@ function welt_options_page_display() {
 
 			//Prints out all settings sections added to a particular settings page
 			do_settings_sections('welt_options_page');
+
+			submit_button();
 			?>
-			<p class="submit">
-				<input name="submit" type="submit" value="<?php _e('Save Changes'); ?>" class="button-primary menu-save" />
-			</p>
 		</form>
 
 	</div>
