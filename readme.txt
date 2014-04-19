@@ -2,7 +2,7 @@
 Contributors: ArnaudBan
 Tags: twitter, widget, embed
 Requires at least: 3
-Tested up to: 3.5.1
+Tested up to: 3.8
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -42,8 +42,9 @@ If you want to help [the code is also on github](https://github.com/ArnaudBan/wi
 
 1. Upload `/widget-embed-latest-tweets/` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to the Widget page, drag and drop the "Widget embed lastest Tweets" widget where you want it to show
-4. Enter at least your Twitter username
+3. Visit the option page "Plugins->Widget Embed Latest Tweet" and follow the instructions
+4. Go to the Widget page, drag and drop the "Widget embed lastest Tweets" widget where you want it to show
+5. Enter at least your Twitter username
 
 == Frequently Asked Questions ==
 
@@ -58,6 +59,12 @@ Sorry no. With the embed method from Twitter you can't really customise the disp
 No. Twitter says : This value [the width] is constrained to be between 250 and 550 pixels
 
 == Changelog ==
+
+= 0.5 =
+
+* French translation
+* Welt's Scripts only when necessary
+* Add a "setting" link on the plugins list page
 
 = 0.4.1 =
 
