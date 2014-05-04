@@ -84,7 +84,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		if( !empty( $screen_name ) ){
 
-			if( $this->is_preview() ){
+			if( method_exists('Widget', 'is_preview' ) && $this->is_preview() ){
 
 				$data = ' ';
 				foreach ($instance as $key => $value) {
