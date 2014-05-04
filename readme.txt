@@ -8,7 +8,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 A Widget to show your latest Tweets.
-Visit the option page "Plugins->Widget Embed Latest Tweet" to authentify yourself
+Visit the option page "Settings->Widget Embed Latest Tweet" to authentify yourself
 
 
 == Description ==
@@ -16,7 +16,7 @@ Visit the option page "Plugins->Widget Embed Latest Tweet" to authentify yoursel
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
 
 This plugin uses the Twitter API version 1.1. You have to authentify yourself !
-Visit the option page "Plugins->Widget Embed Latest Tweet" to do so.
+Visit the option page "Settings->Widget Embed Latest Tweet" to do so.
 
 Options :
 
@@ -42,7 +42,7 @@ If you want to help [the code is also on github](https://github.com/ArnaudBan/wi
 
 1. Upload `/widget-embed-latest-tweets/` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Visit the option page "Plugins->Widget Embed Latest Tweet" and follow the instructions
+3. Visit the option page "Settings->Widget Embed Latest Tweet" and follow the instructions
 4. Go to the Widget page, drag and drop the "Widget embed lastest Tweets" widget where you want it to show
 5. Enter at least your Twitter username
 

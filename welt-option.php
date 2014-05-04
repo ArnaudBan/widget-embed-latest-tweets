@@ -9,20 +9,18 @@ add_action('admin_menu', 'welt_add_option');
 
 function welt_add_option() {
 	//add_plugins_page( $page_title, $menu_title, $capability, $menu_slug, $function);
-	add_plugins_page('Widget Embed Latest Tweet', 'Widget Embed Latest Tweet', 'manage_options', 'welt_options_page', 'welt_options_page_display');
+	add_options_page('Widget Embed Latest Tweet', 'Widget Embed Latest Tweet', 'manage_options', 'welt_options_page', 'welt_options_page_display');
 }
 
 //Content of the option page
 function welt_options_page_display() {
 	?>
 	<div class="wrap">
-		<?php screen_icon(); ?>
+
 		<h2>Widget Embed Latest Tweet</h2>
 
 		<form action="options.php" method="post">
 			<?php
-			//Output Error
-			settings_errors();
 
 			//Output nonce, action, and option_page
 			settings_fields('welt_options_group');

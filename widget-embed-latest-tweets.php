@@ -232,7 +232,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		} else {
 			?>
 			<p>
-				<?php printf( __('You have to enter your <a href="%s">Twitter connections information first</a>', 'widget-embed-lastest-tweets'), 'plugins.php?page=welt_options_page' ) ?>
+				<?php printf( __('You have to enter your <a href="%s">Twitter connections information first</a>', 'widget-embed-lastest-tweets'), 'options-general.php?page=welt_options_page' ) ?>
 			</p>
 			<?php
 		}
@@ -461,7 +461,7 @@ add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
  */
 function welt_enqueue_scripts(){
 	// welt
-	wp_register_script('welt_twitter_script', 'http://platform.twitter.com/widgets.js' , array(), '1.1', true );
+	wp_register_script('welt_twitter_script', '//platform.twitter.com/widgets.js' , array(), '1.1', true );
 	wp_register_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery', 'welt_twitter_script' ), '20130129', true );
 
 }
@@ -488,7 +488,7 @@ require_once 'welt-option.php';
 
 // Add settings link on plugin page
 function welt_add_settings_link($links) {
-  $settings_link = '<a href="plugins.php?page=welt_options_page">' . __('Settings') . '</a>';
+  $settings_link = '<a href="options-general.php?page=welt_options_page">' . __('Settings') . '</a>';
   array_unshift($links, $settings_link);
   return $links;
 }
