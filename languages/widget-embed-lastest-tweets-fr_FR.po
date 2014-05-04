@@ -1,36 +1,37 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Welt\n"
-"POT-Creation-Date: 2013-09-08 09:24+0100\n"
-"PO-Revision-Date: 2013-09-08 09:30+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2014-05-04 10:51+0100\n"
+"PO-Revision-Date: 2014-05-04 10:54+0100\n"
+"Last-Translator: Arnaud Banvillet <arnaud.banvillet@gmail.com>\n"
 "Language-Team: \n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 1.6.5\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../welt-option.php:50
+#: ../welt-option.php:49
 msgid "Twitter connection"
 msgstr "Connection Twitter"
 
-#: ../welt-option.php:63
+#: ../welt-option.php:62
 msgid "Why"
 msgstr "Pourquoi"
 
-#: ../welt-option.php:65
+#: ../welt-option.php:64
 msgid "Twitter's API version 1.1 require it"
 msgstr "l'API de Twitter version 1.1 l'exige"
 
-#: ../welt-option.php:68
+#: ../welt-option.php:67
 msgid "How"
 msgstr "Comment"
 
-#: ../welt-option.php:71
+#: ../welt-option.php:70
 msgid ""
 "Create a new application with your Twitter account. It is very simple, go to "
 "this page :"
@@ -38,7 +39,7 @@ msgstr ""
 "Créer une nouvelle application avec votre compte Twitter. C'est très simple, "
 "rendez vous sur cette page :"
 
-#: ../welt-option.php:75
+#: ../welt-option.php:74
 msgid ""
 "Once your application is created ask to create an access token ( Click the "
 "blue button at the bottom of the page of your Twitter application )."
@@ -47,74 +48,83 @@ msgstr ""
 "token) (cliquez sur le bouton bleu en bas de la page de votre application "
 "twitter)"
 
-#: ../welt-option.php:78
+#: ../welt-option.php:77
 msgid "You should now have all the information asked bellow !"
 msgstr "Vous devriez maintenant avoir toutes les informations suivantes !"
 
-#: ../widget-embed-latest-tweets.php:50
+#: ../widget-embed-latest-tweets.php:53
 msgid "Show your latest Tweets"
 msgstr "Afficher vos derniers Tweets"
 
-#: ../widget-embed-latest-tweets.php:144
+#: ../widget-embed-latest-tweets.php:152
 msgid "Title"
 msgstr "Titre"
 
-#: ../widget-embed-latest-tweets.php:149
+#: ../widget-embed-latest-tweets.php:157
 msgid "Twitter Username"
 msgstr "Nom d'utilisateur Twitter"
 
-#: ../widget-embed-latest-tweets.php:154
+#: ../widget-embed-latest-tweets.php:162
 msgid "Number of Tweet to display"
 msgstr "Nombre de Tweets à afficher"
 
-#: ../widget-embed-latest-tweets.php:159
+#: ../widget-embed-latest-tweets.php:167
 msgid "Width"
 msgstr "largeur"
 
-#: ../widget-embed-latest-tweets.php:162
+#: ../widget-embed-latest-tweets.php:170
 msgid ""
 "Twitter says :This value is constrained to be between 250 and 550 pixels"
 msgstr "Twitter dit : Cette valeur doit être comprise entre 250 et 550 pixels"
 
-#: ../widget-embed-latest-tweets.php:167
+#: ../widget-embed-latest-tweets.php:175
 msgid "Alignment"
 msgstr "Alignement"
 
-#: ../widget-embed-latest-tweets.php:176
+#: ../widget-embed-latest-tweets.php:184
 msgid "Hide Thread"
 msgstr "Masquer les discussions"
 
-#: ../widget-embed-latest-tweets.php:179
+#: ../widget-embed-latest-tweets.php:187
 msgid ""
 "Hide the original message in the case that the embedded Tweet is a reply"
 msgstr "Cacher le message d'origine dans le cas où le Tweet est une réponse"
 
-#: ../widget-embed-latest-tweets.php:182
+#: ../widget-embed-latest-tweets.php:190
 msgid "Hide Media"
 msgstr "Masquer les médias"
 
-#: ../widget-embed-latest-tweets.php:185
+#: ../widget-embed-latest-tweets.php:193
 msgid "Hide the images in the Tweet"
 msgstr "Masquer les images dans les Tweets"
 
-#: ../widget-embed-latest-tweets.php:189
+#: ../widget-embed-latest-tweets.php:197
 msgid "Exclude replies"
 msgstr "Exclure les réponses"
 
-#: ../widget-embed-latest-tweets.php:192
+#: ../widget-embed-latest-tweets.php:200
 msgid "They will not show but they will count in the number of tweets"
 msgstr ""
 "Elles ne s'afficheront pas mais compteront dans le nombre total de tweets"
 
-#: ../widget-embed-latest-tweets.php:196
+#: ../widget-embed-latest-tweets.php:204
 msgid "Language"
-msgstr ""
+msgstr "Langue"
 
-#: ../widget-embed-latest-tweets.php:199
+#: ../widget-embed-latest-tweets.php:207
 msgid "Two firsts caractere only. Example : \"fr\" for french"
 msgstr "Les deux premières lettres seulement. Exemple : \"fr\" pour français"
 
-#: ../widget-embed-latest-tweets.php:317
+#: ../widget-embed-latest-tweets.php:214
+#, php-format
+msgid ""
+"You have to enter your <a href=\"%s\">Twitter connections information first</"
+"a>"
+msgstr ""
+"Vous devez entrer vos <a href=\"%s\">informations de connexion Twitter</a> "
+"d'abord"
+
+#: ../widget-embed-latest-tweets.php:333
 msgid ""
 "Error: Twitter did not respond. Please wait a few minutes and refresh this "
 "page."
@@ -122,6 +132,6 @@ msgstr ""
 "Erreur: Twitter ne répond pas. Attendez quelques minutes et rafraîchissez "
 "cette page."
 
-#: ../widget-embed-latest-tweets.php:360
+#: ../widget-embed-latest-tweets.php:376
 msgid "Settings"
 msgstr ""

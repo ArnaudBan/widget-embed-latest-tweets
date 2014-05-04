@@ -142,66 +142,79 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		$instance = wp_parse_args($instance, $this->defaut);
 		extract($instance);
 
-		?>
-		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?> :</label>
-			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
-		</p>
+		$twitter_oauth_var = get_option('welt_twitter_oauth_var');
 
-		<p>
-			<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Username', 'widget-embed-lastest-tweets') ?> :</label>
-			<input class="widefat" id="<?php echo $this->get_field_id('screen_name'); ?>" name="<?php echo $this->get_field_name('screen_name'); ?>" type="text" value="<?php if( isset($screen_name) ) echo $screen_name; ?>" />
-		</p>
+		// Are all the options there ?
+		if( is_array( $twitter_oauth_var ) && count($twitter_oauth_var) == 4 ){
 
-		<p>
-			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Tweet to display', 'widget-embed-lastest-tweets') ?> :</label>
-			<input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $count; ?>" />
-		</p>
+			?>
+			<p>
+				<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?> :</label>
+				<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+			</p>
 
-		<p>
-			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width') ?> :</label>
-			<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="250" max="550" value="<?php echo $maxwidth; ?>" />
-			<br />
-			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels', 'widget-embed-lastest-tweets') ?></span>
+			<p>
+				<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Username', 'widget-embed-lastest-tweets') ?> :</label>
+				<input class="widefat" id="<?php echo $this->get_field_id('screen_name'); ?>" name="<?php echo $this->get_field_name('screen_name'); ?>" type="text" value="<?php if( isset($screen_name) ) echo $screen_name; ?>" />
+			</p>
 
-		</p>
+			<p>
+				<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Tweet to display', 'widget-embed-lastest-tweets') ?> :</label>
+				<input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $count; ?>" />
+			</p>
 
-		<p>
-			<label for="<?php echo $this->get_field_id('align'); ?>"><?php _e('Alignment') ?> :</label>
-			<select id="<?php echo $this->get_field_id('align'); ?>" name="<?php echo $this->get_field_name('align'); ?>">
-				<?php foreach( $this->align_possible_value as $value ) { ?>
-					<option value="<?php echo $value ?>" <?php selected($value, $align, true) ?>><?php echo $value ?></option>
-				<?php } ?>
-			</select>
-		</p>
+			<p>
+				<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width') ?> :</label>
+				<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="250" max="550" value="<?php echo $maxwidth; ?>" />
+				<br />
+				<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels', 'widget-embed-lastest-tweets') ?></span>
 
-		<p>
-			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread', 'widget-embed-lastest-tweets') ?> :</label>
-			<input id="<?php echo $this->get_field_id('hide_thread'); ?>" name="<?php echo $this->get_field_name('hide_thread'); ?>" type="checkbox" <?php checked( $hide_thread ) ?> value="hide_thread"/>
-			<br />
-			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply', 'widget-embed-lastest-tweets') ?></span>
-		</p>
-		<p>
-			<label for="<?php echo $this->get_field_id('hide_media'); ?>"><?php _e('Hide Media', 'widget-embed-lastest-tweets') ?> :</label>
-			<input id="<?php echo $this->get_field_id('hide_media'); ?>" name="<?php echo $this->get_field_name('hide_media'); ?>" type="checkbox" <?php checked( $hide_media ) ?> value="hide_media"/>
-			<br />
-			<span class="description"><?php _e('Hide the images in the Tweet' , 'widget-embed-lastest-tweets') ?></span>
-		</p>
+			</p>
 
-		<p>
-			<label for="<?php echo $this->get_field_id('exclude_replies'); ?>"><?php _e('Exclude replies', 'widget-embed-lastest-tweets') ?> :</label>
-			<input id="<?php echo $this->get_field_id('exclude_replies'); ?>" name="<?php echo $this->get_field_name('exclude_replies'); ?>" type="checkbox" <?php checked( $exclude_replies ) ?> value="exclude_replies"/>
-			<br />
-			<span class="description"><?php _e('They will not show but they will count in the number of tweets' , 'widget-embed-lastest-tweets') ?></span>
-		</p>
+			<p>
+				<label for="<?php echo $this->get_field_id('align'); ?>"><?php _e('Alignment') ?> :</label>
+				<select id="<?php echo $this->get_field_id('align'); ?>" name="<?php echo $this->get_field_name('align'); ?>">
+					<?php foreach( $this->align_possible_value as $value ) { ?>
+						<option value="<?php echo $value ?>" <?php selected($value, $align, true) ?>><?php echo $value ?></option>
+					<?php } ?>
+				</select>
+			</p>
 
-		<p>
-			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language', 'widget-embed-lastest-tweets') ?> :</label>
-			<input id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" type="text" value="<?php echo $lang; ?>" size="2"/>
-			<br />
-			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french', 'widget-embed-lastest-tweets') ?></span>
-		</p>
-		<?php
+			<p>
+				<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread', 'widget-embed-lastest-tweets') ?> :</label>
+				<input id="<?php echo $this->get_field_id('hide_thread'); ?>" name="<?php echo $this->get_field_name('hide_thread'); ?>" type="checkbox" <?php checked( $hide_thread ) ?> value="hide_thread"/>
+				<br />
+				<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply', 'widget-embed-lastest-tweets') ?></span>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id('hide_media'); ?>"><?php _e('Hide Media', 'widget-embed-lastest-tweets') ?> :</label>
+				<input id="<?php echo $this->get_field_id('hide_media'); ?>" name="<?php echo $this->get_field_name('hide_media'); ?>" type="checkbox" <?php checked( $hide_media ) ?> value="hide_media"/>
+				<br />
+				<span class="description"><?php _e('Hide the images in the Tweet' , 'widget-embed-lastest-tweets') ?></span>
+			</p>
+
+			<p>
+				<label for="<?php echo $this->get_field_id('exclude_replies'); ?>"><?php _e('Exclude replies', 'widget-embed-lastest-tweets') ?> :</label>
+				<input id="<?php echo $this->get_field_id('exclude_replies'); ?>" name="<?php echo $this->get_field_name('exclude_replies'); ?>" type="checkbox" <?php checked( $exclude_replies ) ?> value="exclude_replies"/>
+				<br />
+				<span class="description"><?php _e('They will not show but they will count in the number of tweets' , 'widget-embed-lastest-tweets') ?></span>
+			</p>
+
+			<p>
+				<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language', 'widget-embed-lastest-tweets') ?> :</label>
+				<input id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" type="text" value="<?php echo $lang; ?>" size="2"/>
+				<br />
+				<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french', 'widget-embed-lastest-tweets') ?></span>
+			</p>
+			<?php
+
+		} else {
+			?>
+			<p>
+				<?php printf( __('You have to enter your <a href="%s">Twitter connections information first</a>', 'widget-embed-lastest-tweets'), 'plugins.php?page=welt_options_page' ) ?>
+			</p>
+			<?php
+		}
 	}
 
 }

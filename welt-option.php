@@ -45,16 +45,15 @@ function welt_admin_init() {
 	//register_setting( $option_group, $option_name, $sanitize_callback );
 	register_setting('welt_options_group', 'welt_twitter_oauth_var', 'welt_twitter_oauth_var_validate');
 
-	//On créer une section dans nos options
 	//add_settings_section( $id, $title, $callback, $page );
 	add_settings_section('welt_twitter_oauth_section', __('Twitter connection', 'widget-embed-lastest-tweets'), 'welt_twitter_oauth_section_text', 'welt_options_page');
 
 	//Register a settings field to a settings page and section.
 	//add_settings_field( $id, $title, $callback, $page, $section, $args );
-	add_settings_field('welt_twitter_consumer_key', 'Twitter consumer Key', 'welt_twitter_consumer_key_display', 'welt_options_page', 'welt_twitter_oauth_section');
-	add_settings_field('welt_twitter_consumer_secret', 'Twitter consumer Secret', 'welt_twitter_consumer_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
-	add_settings_field('welt_twitter_access_token', 'Twitter Access Token', 'welt_twitter_access_token_display', 'welt_options_page', 'welt_twitter_oauth_section');
-	add_settings_field('welt_twitter_access_token_secret', 'Twitter Access Token Secret', 'welt_twitter_access_token_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
+	add_settings_field('welt_twitter_consumer_key', 'API key', 'welt_twitter_consumer_key_display', 'welt_options_page', 'welt_twitter_oauth_section');
+	add_settings_field('welt_twitter_consumer_secret', 'API secret', 'welt_twitter_consumer_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
+	add_settings_field('welt_twitter_access_token', 'Access token', 'welt_twitter_access_token_display', 'welt_options_page', 'welt_twitter_oauth_section');
+	add_settings_field('welt_twitter_access_token_secret', 'Access token secret', 'welt_twitter_access_token_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
 }
 
 //Le text au dessus des options
@@ -83,8 +82,8 @@ function welt_twitter_oauth_section_text() {
 function welt_twitter_consumer_key_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$consumer_key = $twitter_oauth_var['consumer_key'];
-	//Attention le "name" du input doit correspondre au nom de l'option
+	$consumer_key = isset( $twitter_oauth_var['consumer_key'] ) ? $twitter_oauth_var['consumer_key'] : '';
+
 	?>
 	<input id='welt_twitter_oauth_var[consumer_key]' name='welt_twitter_oauth_var[consumer_key]' type='text' value='<?php echo $consumer_key; ?>' class="widefat"/>
 	<?php
@@ -92,17 +91,15 @@ function welt_twitter_consumer_key_display() {
 function welt_twitter_consumer_secret_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$consumer_secret = $twitter_oauth_var['consumer_secret'];
-	//Attention le "name" du input doit correspondre au nom de l'option
+	$consumer_secret = isset( $twitter_oauth_var['consumer_secret'] ) ? $twitter_oauth_var['consumer_secret'] : '';
 	?>
-	<input id='welt_twitter_oauth_var[consumer_secret]' name='welt_twitter_oauth_var[consumer_secret]' type='text' value='<?php echo $consumer_secret; ?>' class="widefat"/>
+	<input id='welt_twitter_oauth_var[consumer_secret]' name='welt_twitter_oauth_var[consumer_secret]' type='password' value='<?php echo $consumer_secret; ?>' class="widefat"/>
 	<?php
 }
 function welt_twitter_access_token_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$token_key = $twitter_oauth_var['token_key'];
-	//Attention le "name" du input doit correspondre au nom de l'option
+	$token_key = isset( $twitter_oauth_var['token_key'] ) ? $twitter_oauth_var['token_key'] : '';
 	?>
 	<input id='welt_twitter_oauth_var[token_key]' name='welt_twitter_oauth_var[token_key]' type='text' value='<?php echo $token_key; ?>' class="widefat"/>
 	<?php
@@ -110,8 +107,7 @@ function welt_twitter_access_token_display() {
 function welt_twitter_access_token_secret_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$token_secret = $twitter_oauth_var['token_secret'];
-	//Attention le "name" du input doit correspondre au nom de l'option
+	$token_secret = isset( $twitter_oauth_var['token_secret'] ) ? $twitter_oauth_var['token_secret'] : '';
 	?>
 	<input id='welt_twitter_oauth_var[token_secret]' name='welt_twitter_oauth_var[token_secret]' type='text' value='<?php echo $token_secret; ?>' class="widefat"/>
 	<?php
@@ -122,9 +118,12 @@ function welt_twitter_oauth_var_validate($twitter_variable) {
 	$valid_option = array();
 
 	foreach ($twitter_variable as $option => $value) {
+
 		if( !empty( $value ) ){
-			$valid_option[$option] = $value;
+
+			$valid_option[$option] = sanitize_text_field( $value );
 		}
+
 	}
 
 	return $valid_option;
