@@ -269,6 +269,7 @@ function welt_set_tweet_transient( $widget_id, $options, $update = false){
 
 
 					$options['id'] = $id;
+					$options['omit_script'] = true;
 
 					if( empty( $maxwidth) ){
 						unset( $options['maxwidth']);
