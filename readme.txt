@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: ArnaudBan
 Tags: twitter, widget, embed
-Requires at least: 3
+Requires at least: 3.5
 Tested up to: 3.9
 Stable tag: trunk
 License: GPLv2

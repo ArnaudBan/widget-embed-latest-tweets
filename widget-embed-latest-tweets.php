@@ -101,31 +101,31 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		$instance = $old_instance;
 		$instance = wp_parse_args($instance, $this->defaut);
 
-		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['title'] = sanitize_text_field($new_instance['title']);
 
-		$instance['screen_name'] = strip_tags($new_instance['screen_name']);
+		$instance['screen_name'] = sanitize_text_field($new_instance['screen_name']);
 
-		$count = strip_tags($new_instance['count']);
-
-		if( is_numeric($count))
+		$count = intval( $new_instance['count'] );
+		if( $count != 0 ){
 			$instance['count'] = $count ;
+		}
 
-		$maxwidth = strip_tags($new_instance['maxwidth']);
-		if( is_numeric( $maxwidth ) || empty( $maxwidth ))
-			$instance['maxwidth'] = $maxwidth;
+		$maxwidth = intval($new_instance['maxwidth']);
+		$instance['maxwidth'] = $maxwidth != 0 ? $maxwidth : '';
 
-
-		if(in_array($new_instance['align'], $this->align_possible_value ))
+		if( in_array($new_instance['align'], $this->align_possible_value ) ){
 			$instance['align'] = $new_instance['align'];
+		}
 
-		$instance['hide_thread'] = $new_instance['hide_thread'] == 'hide_thread';
-		$instance['hide_media'] = $new_instance['hide_media'] == 'hide_media';
-		$instance['exclude_replies'] = $new_instance['exclude_replies'] == 'exclude_replies';
+		$instance['hide_thread'] = isset( $new_instance['hide_thread'] ) && $new_instance['hide_thread'] == 'hide_thread';
+		$instance['hide_media'] = isset( $new_instance['hide_media'] ) && $new_instance['hide_media'] == 'hide_media';
+		$instance['exclude_replies'] = isset( $new_instance['exclude_replies'] ) && $new_instance['exclude_replies'] == 'exclude_replies';
 
-		$instance['lang'] = strip_tags($new_instance['lang']);
+		$instance['lang'] = sanitize_text_field($new_instance['lang']);
 
 		//When everythings is check, set the transient
 		welt_set_tweet_transient( $this->id, $instance , true );
+
 
 		return $instance;
 	}
@@ -278,7 +278,7 @@ function welt_set_tweet_transient( $widget_id, $options, $update = false){
 					$last_tweet_html = $connection->get('https://api.twitter.com/1.1/statuses/oembed.json', $options);
 
 
-					set_transient('last_tweet_html_' . $id, $last_tweet_html );
+					set_transient('last_tweet_html_' . $id, $last_tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
 
 				}
 			}
@@ -299,7 +299,6 @@ function welt_display_tweets( ){
 	$tweet_html = '';
 
 	$last_tweet = get_transient('last_tweet_' . $widget_id);
-
 
 	if( false === $last_tweet ) {
 
