@@ -60,6 +60,12 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.6 =
+
+* Change text domaine to be ready for wordpress.org "language packs"
+* Less scripts downloded
+* Make the widget usable with the widget preview manager
+
 = 0.5 =
 
 * French translation
