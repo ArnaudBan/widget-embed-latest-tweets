@@ -3,7 +3,7 @@
 A Widget to show your latest tweets. Use the oEmbed methode and some cache. It is simple, elegant and it works.
 
 This plugin uses the Twitter API version 1.1. You have to authentify yourself !
-Visit the option page "Plugins->Widget Embed Last Plugin" to do so.
+Visit the option page "Settings->Widget Embed Last Plugin" to do so.
 
 Options :
 
