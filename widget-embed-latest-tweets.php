@@ -8,6 +8,9 @@
  * Author URI: http://arnaudban.me
  * License: GPL2
  *
+ * Text Domain: widget-embed-lastest-tweets
+ * Domain Path: /languages
+ *
  * Copyright 2012  Arnaud Banvillet  (email : arnaud.banvillet@gmail.com )
  *
  * This program is free software; you can redistribute it and/or modify
@@ -47,7 +50,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		parent::__construct(
 						'welt_last_tweets', // Base ID
 						'Widget embed latest Tweets', // Name
-						array('description' => __('Show your latest Tweets', 'ab-welt-locales'))// Args
+						array('description' => __('Show your latest Tweets', 'widget-embed-lastest-tweets'))// Args
 		);
 	}
 
@@ -146,12 +149,12 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Username', 'ab-welt-locales') ?> :</label>
+			<label for="<?php echo $this->get_field_id('screen_name'); ?>"><?php _e('Twitter Username', 'widget-embed-lastest-tweets') ?> :</label>
 			<input class="widefat" id="<?php echo $this->get_field_id('screen_name'); ?>" name="<?php echo $this->get_field_name('screen_name'); ?>" type="text" value="<?php if( isset($screen_name) ) echo $screen_name; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Tweet to display', 'ab-welt-locales') ?> :</label>
+			<label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Number of Tweet to display', 'widget-embed-lastest-tweets') ?> :</label>
 			<input id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" type="number" step="1" min="1" max="20" value="<?php echo $count; ?>" />
 		</p>
 
@@ -159,7 +162,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			<label for="<?php echo $this->get_field_id('maxwidth'); ?>"><?php _e('Width') ?> :</label>
 			<input id="<?php echo $this->get_field_id('maxwidth'); ?>" name="<?php echo $this->get_field_name('maxwidth'); ?>" type="number" step="1" min="250" max="550" value="<?php echo $maxwidth; ?>" />
 			<br />
-			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels', 'ab-welt-locales') ?></span>
+			<span class="description"><?php _e('Twitter says :This value is constrained to be between 250 and 550 pixels', 'widget-embed-lastest-tweets') ?></span>
 
 		</p>
 
@@ -173,30 +176,30 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread', 'ab-welt-locales') ?> :</label>
+			<label for="<?php echo $this->get_field_id('hide_thread'); ?>"><?php _e('Hide Thread', 'widget-embed-lastest-tweets') ?> :</label>
 			<input id="<?php echo $this->get_field_id('hide_thread'); ?>" name="<?php echo $this->get_field_name('hide_thread'); ?>" type="checkbox" <?php checked( $hide_thread ) ?> value="hide_thread"/>
 			<br />
-			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply', 'ab-welt-locales') ?></span>
+			<span class="description"><?php _e('Hide the original message in the case that the embedded Tweet is a reply', 'widget-embed-lastest-tweets') ?></span>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('hide_media'); ?>"><?php _e('Hide Media', 'ab-welt-locales') ?> :</label>
+			<label for="<?php echo $this->get_field_id('hide_media'); ?>"><?php _e('Hide Media', 'widget-embed-lastest-tweets') ?> :</label>
 			<input id="<?php echo $this->get_field_id('hide_media'); ?>" name="<?php echo $this->get_field_name('hide_media'); ?>" type="checkbox" <?php checked( $hide_media ) ?> value="hide_media"/>
 			<br />
-			<span class="description"><?php _e('Hide the images in the Tweet' , 'ab-welt-locales') ?></span>
+			<span class="description"><?php _e('Hide the images in the Tweet' , 'widget-embed-lastest-tweets') ?></span>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('exclude_replies'); ?>"><?php _e('Exclude replies', 'ab-welt-locales') ?> :</label>
+			<label for="<?php echo $this->get_field_id('exclude_replies'); ?>"><?php _e('Exclude replies', 'widget-embed-lastest-tweets') ?> :</label>
 			<input id="<?php echo $this->get_field_id('exclude_replies'); ?>" name="<?php echo $this->get_field_name('exclude_replies'); ?>" type="checkbox" <?php checked( $exclude_replies ) ?> value="exclude_replies"/>
 			<br />
-			<span class="description"><?php _e('They will not show but they will count in the number of tweets' , 'ab-welt-locales') ?></span>
+			<span class="description"><?php _e('They will not show but they will count in the number of tweets' , 'widget-embed-lastest-tweets') ?></span>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language', 'ab-welt-locales') ?> :</label>
+			<label for="<?php echo $this->get_field_id('lang'); ?>"><?php _e('Language', 'widget-embed-lastest-tweets') ?> :</label>
 			<input id="<?php echo $this->get_field_id('lang'); ?>" name="<?php echo $this->get_field_name('lang'); ?>" type="text" value="<?php echo $lang; ?>" size="2"/>
 			<br />
-			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french', 'ab-welt-locales') ?></span>
+			<span class="description"><?php _e('Two firsts caractere only. Example : "fr" for french', 'widget-embed-lastest-tweets') ?></span>
 		</p>
 		<?php
 	}
@@ -314,7 +317,7 @@ function welt_display_tweets( ){
 
 		}
 	} else {
-		$tweet_html = __('Error: Twitter did not respond. Please wait a few minutes and refresh this page.', 'ab-welt-locales');
+		$tweet_html = __('Error: Twitter did not respond. Please wait a few minutes and refresh this page.', 'widget-embed-lastest-tweets');
 	}
 
 
@@ -346,7 +349,7 @@ function welt_plugin_init() {
 
 	}
 
-  load_plugin_textdomain( 'ab-welt-locales', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+  load_plugin_textdomain( 'widget-embed-lastest-tweets', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 add_action('plugins_loaded', 'welt_plugin_init');
 

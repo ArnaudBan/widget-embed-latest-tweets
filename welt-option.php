@@ -47,7 +47,7 @@ function welt_admin_init() {
 
 	//On créer une section dans nos options
 	//add_settings_section( $id, $title, $callback, $page );
-	add_settings_section('welt_twitter_oauth_section', __('Twitter connection', 'ab-welt-locales'), 'welt_twitter_oauth_section_text', 'welt_options_page');
+	add_settings_section('welt_twitter_oauth_section', __('Twitter connection', 'widget-embed-lastest-tweets'), 'welt_twitter_oauth_section_text', 'welt_options_page');
 
 	//Register a settings field to a settings page and section.
 	//add_settings_field( $id, $title, $callback, $page, $section, $args );
@@ -60,22 +60,22 @@ function welt_admin_init() {
 //Le text au dessus des options
 function welt_twitter_oauth_section_text() {
 	?>
-	<h4><?php _e('Why', 'ab-welt-locales'); ?> ?</h4>
+	<h4><?php _e('Why', 'widget-embed-lastest-tweets'); ?> ?</h4>
 	<p>
-		<?php _e('Twitter\'s API version 1.1 require it', 'ab-welt-locales'); ?>
+		<?php _e('Twitter\'s API version 1.1 require it', 'widget-embed-lastest-tweets'); ?>
 	</p>
 
-	<h4><?php _e('How', 'ab-welt-locales'); ?> ?</h4>
+	<h4><?php _e('How', 'widget-embed-lastest-tweets'); ?> ?</h4>
 
 	<p>
-		<?php _e('Create a new application with your Twitter account. It is very simple, go to this page :', 'ab-welt-locales'); ?>
+		<?php _e('Create a new application with your Twitter account. It is very simple, go to this page :', 'widget-embed-lastest-tweets'); ?>
 		<a href="https://dev.twitter.com/apps" title="dev Twitter apps">https://dev.twitter.com/apps</a>
 	</p>
 	<p>
-		<?php _e('Once your application is created ask to create an access token ( Click the blue button at the bottom of the page of your Twitter application ).', 'ab-welt-locales') ?>
+		<?php _e('Once your application is created ask to create an access token ( Click the blue button at the bottom of the page of your Twitter application ).', 'widget-embed-lastest-tweets') ?>
 	</p>
 	<p>
-		<?php _e('You should now have all the information asked bellow !', 'ab-welt-locales') ?>
+		<?php _e('You should now have all the information asked bellow !', 'widget-embed-lastest-tweets') ?>
 	</p>
 	<?php
 }

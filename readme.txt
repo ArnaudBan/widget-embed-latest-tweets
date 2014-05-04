@@ -2,7 +2,7 @@
 Contributors: ArnaudBan
 Tags: twitter, widget, embed
 Requires at least: 3
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
