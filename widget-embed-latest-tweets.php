@@ -462,7 +462,7 @@ add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
 function welt_enqueue_scripts(){
 	// welt
 	wp_register_script('welt_twitter_script', '//platform.twitter.com/widgets.js' , array(), '1.1', true );
-	wp_register_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery', 'welt_twitter_script' ), '20130129', true );
+	wp_register_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery', 'welt_twitter_script' ), '20140504', true );
 
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
