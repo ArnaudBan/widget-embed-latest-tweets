@@ -33,6 +33,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 	var $defaut = array(
 			'title'            => 'Latest Tweets',
 			'count'            => 3,
+			'maxwidth'         => '',
 			'align'            => 'none',
 			'hide_thread'      => true,
 			'lang'             => 'en',
@@ -77,11 +78,29 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		echo $before_widget;
 
-		if ( !empty( $title ) )
+		if ( !empty( $title ) ){
 			echo $before_title . $title . $after_title;
+		}
 
-		if( !empty( $screen_name ) )
-			echo '<div id="welt-' . $this->id . '" class="welt-tweet-wrapper"></div>';
+		if( !empty( $screen_name ) ){
+
+			if( $this->is_preview() ){
+
+				$data = ' ';
+				foreach ($instance as $key => $value) {
+
+					if( !empty( $value ) ){
+						$data .= "data-{$key}='$value' ";
+					}
+				}
+
+				echo "<div id='welt-{$this->id}' class='welt-tweet-wrapper'$data></div>";
+
+			} else {
+
+				echo "<div id='welt-{$this->id}' class='welt-tweet-wrapper'></div>";
+			}
+		}
 
 		echo $after_widget;
 	}
@@ -123,8 +142,10 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		$instance['lang'] = sanitize_text_field($new_instance['lang']);
 
-		//When everythings is check, set the transient
-		welt_set_tweet_transient( $this->id, $instance , true );
+		// When everythings is check and we are not in the customizer, set the transient
+		if( ! $this->is_preview() ){
+			welt_set_tweet_transient( $this->id, $instance , true );
+		}
 
 
 		return $instance;
@@ -229,60 +250,118 @@ add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_L
 	* @param array $options
 	* @param boolean $update
 	*/
-function welt_set_tweet_transient( $widget_id, $options, $update = false){
+function welt_set_tweet_transient( $widget_id, $options ){
 
 	$return_value = false;
 
+	$last_tweet = welt_get_latest_tweet( $options );
+
+	if( $last_tweet && is_array( $last_tweet ) ){
+
+		set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
+
+			foreach ($last_tweet as $tweet) {
+
+				$tweet_id = $tweet->id_str;
+
+				$tweet_html = welt_get_tweet_html( $tweet_id, $options );
+
+				if( $tweet_html ){
+					set_transient('last_tweet_html_' . $tweet_id, $tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
+				}
+
+			}
+	} else {
+
+		delete_transient( 'last_tweet_' . $widget_id );
+	}
+}
+
+/**
+ * Get twitter connection based on the option
+ *
+ */
+function welt_get_twitter_connection(){
+
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
 
+	$connection = false;
 	//Check if wee use the authentification methode. We need to have all the key and secret.
 	if( is_array( $twitter_oauth_var ) && count($twitter_oauth_var) == 4 ){
 
 		$connection = new TwitterOAuth($twitter_oauth_var['consumer_key'], $twitter_oauth_var['consumer_secret'], $twitter_oauth_var['token_key'],$twitter_oauth_var['token_secret']);
+
+	}
+
+	return $connection;
+}
+
+/**
+ * get the lastest tweet
+ */
+function welt_get_latest_tweet( $options ){
+
+	$connection = welt_get_twitter_connection();
+
+	// If the connection is ok let get the twitter information
+	if( $connection ){
+
 		$last_tweet = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json', $options );
 
 		// if there is an error
 		if( isset( $last_tweet->errors ) ){
 
-			delete_transient( 'last_tweet_' . $widget_id );
 			$return_value = $last_tweet->errors[0]->message;
+			error_log($last_tweet->errors[0]->message);
 
 		// If there is nothing
 		} elseif( $last_tweet == false || empty( $last_tweet )){
 
-			delete_transient( 'last_tweet_' . $widget_id );
 			$return_value = false;
 
 		// It should be ok
 		} else {
 
 			$return_value = $last_tweet;
-
-			set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
-
-			foreach ($last_tweet as $tweet) {
-
-				$id = $tweet->id_str;
-
-
-				if( $update || ! get_transient('last_tweet_html_' . $id)){
-
-
-					$options['id'] = $id;
-					$options['omit_script'] = true;
-
-					if( empty( $maxwidth) ){
-						unset( $options['maxwidth']);
-					}
-
-					$last_tweet_html = $connection->get('https://api.twitter.com/1.1/statuses/oembed.json', $options);
-
-
-					set_transient('last_tweet_html_' . $id, $last_tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
-
-				}
-			}
 		}
+
+	} else {
+
+		$return_value = 'Connection error';
+
+	}
+
+	return $return_value;
+}
+
+function welt_get_tweet_html( $tweet_id, $options ){
+
+	$connection = welt_get_twitter_connection();
+
+	// If the connection is ok let get the twitter information
+	if( $connection ){
+		$options['id'] = $tweet_id;
+		$options['omit_script'] = true;
+
+		if( empty( $maxwidth) ){
+			unset( $options['maxwidth']);
+		}
+
+		$tweet = $connection->get('https://api.twitter.com/1.1/statuses/oembed.json', $options);
+
+		if( isset( $tweet->errors ) ){
+
+			$return_value = 'false';
+			error_log( $last_tweet->errors[0]->message );
+
+		} else {
+
+			$return_value = $tweet->html;
+		}
+
+	} else {
+
+		$return_value = 'false';
 	}
 
 	return $return_value;
@@ -298,41 +377,69 @@ function welt_display_tweets( ){
 
 	$tweet_html = '';
 
-	$last_tweet = get_transient('last_tweet_' . $widget_id);
+	// In preview mode we passe all instance in data html attrribut
+	if( isset( $_POST['widget_data'] ) && ! empty( $_POST['widget_data'] ) ){
 
-	if( false === $last_tweet ) {
+		$instance = $_POST['widget_data'];
 
-		// Get the widget instance
-		$all_instance_widget = get_option('widget_welt_last_tweets');
-
-		$widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
-
-		$instance = $all_instance_widget[$widget_real_id];
-
-		// Set the transient for this widget
-		$last_tweet = welt_set_tweet_transient( $widget_id, $instance, false );
-
-	}
-
-	if( is_string( $last_tweet ) ){ // It is a error
-
-		echo $last_tweet;
-
-	} elseif ( $last_tweet != false ){
+		$last_tweet = welt_get_latest_tweet( $instance );
 
 		foreach ($last_tweet as $tweet) {
 
 			$tweet_id = $tweet->id_str;
 
-			$last_tweet_html = get_transient('last_tweet_html_' . $tweet_id);
-
-			$tweet_html .= $last_tweet_html->html;
+			$tweet_html .= welt_get_tweet_html( $tweet_id, $instance );
 
 		}
-	} else {
-		$tweet_html = __('Error: Twitter did not respond. Please wait a few minutes and refresh this page.', 'widget-embed-lastest-tweets');
-	}
 
+
+	} else {
+
+
+		$last_tweet = get_transient('last_tweet_' . $widget_id);
+
+		if( false === $last_tweet ) {
+
+			// Get the widget instance
+			$all_instance_widget = get_option('widget_welt_last_tweets');
+
+			$widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
+
+			$instance = $all_instance_widget[$widget_real_id];
+
+
+			// Set the transient for this widget
+			$last_tweet = welt_get_latest_tweet( $instance );
+		}
+
+		if( $last_tweet && is_array( $last_tweet ) ){
+
+			set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
+
+			foreach ($last_tweet as $tweet) {
+
+				$tweet_id = $tweet->id_str;
+
+				$tweet_html_transient = get_transient('last_tweet_html_' . $tweet_id);
+
+				if( false === $tweet_html_transient ){
+
+					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $options );
+
+					if( $tweet_html_transient ){
+						set_transient('last_tweet_html_' . $tweet_id, $tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
+						$tweet_html .= $tweet_html_transient;
+					}
+
+				} else {
+
+					$tweet_html .= $tweet_html_transient;
+				}
+
+			}
+		}
+
+	}
 
 	echo $tweet_html;
 	die;
@@ -347,7 +454,8 @@ add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
  */
 function welt_enqueue_scripts(){
 	// welt
-	wp_register_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery' ), '20130129', true );
+	wp_register_script('welt_twitter_script', 'http://platform.twitter.com/widgets.js' , array(), '1.1', true );
+	wp_register_script('welt_script', plugins_url('/js/welt-scripts.js', __FILE__) , array( 'jquery', 'welt_twitter_script' ), '20130129', true );
 
 }
 add_action('wp_enqueue_scripts', 'welt_enqueue_scripts');
