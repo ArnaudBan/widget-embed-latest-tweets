@@ -3,7 +3,7 @@
  * Plugin Name: Widget embed latest Tweets
  * Plugin URI: http://arnaudban.me/blog/portfolio/widget-embed-latest-tweets/
  * Description: A Widget to show your latest Tweets. Use the oEmbed methode and some cache. Visit the option page "Plugins->Widget Embed Last Plugin" to authentify yourself
- * Version: 0.6
+ * Version: 0.6.2
  * Author: Arnaud Banvillet
  * Author URI: http://arnaudban.me
  * License: GPL2
@@ -143,7 +143,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		$instance['lang'] = sanitize_text_field($new_instance['lang']);
 
 		// When everythings is check and we are not in the customizer, set the transient
-		if( ! $this->is_preview() ){
+		if( ! method_exists('Widget', 'is_preview' ) || ! $this->is_preview() ){
 			welt_set_tweet_transient( $this->id, $instance , true );
 		}
 

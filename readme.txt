@@ -60,6 +60,10 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.6.2 =
+
+* Check if the new Widget::is_preview method exist to avoid fatal error
+
 = 0.6 =
 
 * Change text domaine to be ready for wordpress.org "language packs"
