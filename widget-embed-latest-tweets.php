@@ -354,6 +354,7 @@ function welt_get_tweet_html( $tweet_id, $options ){
 		if( isset( $tweet->errors ) ){
 
 			$return_value = 'false';
+            $return_value = $last_tweet->errors[0]->message;
 			error_log( $last_tweet->errors[0]->message );
 
 		} else {
@@ -375,7 +376,7 @@ function welt_get_tweet_html( $tweet_id, $options ){
  */
 function welt_display_tweets( ){
 
-	$widget_id = $_POST['widget_id'];
+	$widget_ids = $_POST['widget_id'];
 
 	$tweet_html = '';
 
@@ -395,56 +396,62 @@ function welt_display_tweets( ){
 
 	} else {
 
+        foreach($widget_ids as $widget_id) {
 
-		$last_tweet = get_transient('last_tweet_' . $widget_id);
+            $tweet_html .= '<div id="welt-'.$widget_id.'">';
 
-		if( false === $last_tweet ) {
+            $last_tweet = get_transient('last_tweet_' . $widget_id);
 
-			// Get the widget instance
-			$all_instance_widget = get_option('widget_welt_last_tweets');
+            if( false === $last_tweet ) {
 
-			$widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
+                // Get the widget instance
+                $all_instance_widget = get_option('widget_welt_last_tweets');
 
-			$instance = $all_instance_widget[$widget_real_id];
+                $widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
 
+                $instance = $all_instance_widget[$widget_real_id];
 
-			// Set the transient for this widget
-			$last_tweet = welt_get_latest_tweet( $instance );
-		}
+                // Set the transient for this widget
+                $last_tweet = welt_get_latest_tweet( $instance );
+            }
 
-		if( $last_tweet && is_array( $last_tweet ) ){
+            if( $last_tweet && is_array( $last_tweet ) ){
 
-			set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
+                set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
 
-			foreach ($last_tweet as $tweet_id) {
+                foreach ($last_tweet as $tweet_id) {
 
-				// retrocompatibility
-				if( is_object( $tweet_id ) ){
-					$tweet_id = $tweet_id->id_str;
-				}
+                    // retrocompatibility
+                    if( is_object( $tweet_id ) ){
+                        $tweet_id = $tweet_id->id_str;
+                    }
 
-				$tweet_html_transient = get_transient('last_tweet_html_' . $tweet_id);
+                    $tweet_html_transient = get_transient('last_tweet_html_' . $tweet_id);
 
-				if( false === $tweet_html_transient ){
+                    if( false === $tweet_html_transient || count($tweet_html_transient) <= 1){
 
-					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $options );
+                        $tweet_html_transient = welt_get_tweet_html( $tweet_id, $options );
 
-					if( $tweet_html_transient ){
-						set_transient('last_tweet_html_' . $tweet_id, $tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
-						$tweet_html .= $tweet_html_transient;
-					}
+                        if( $tweet_html_transient ){
+                            set_transient('last_tweet_html_' . $tweet_id, $tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
+                            $tweet_html .= $tweet_html_transient;
+                        }
 
-				} else {
+                    } else {
 
-					// retrocompatibility
-					if( is_object( $tweet_html_transient ) ){
-						$tweet_html_transient = $tweet_html_transient->html;
-					}
-					$tweet_html .= $tweet_html_transient;
-				}
+                        // retrocompatibility
+                        if( is_object( $tweet_html_transient ) ){
+                            $tweet_html_transient = $tweet_html_transient->html;
+                        }
+                        $tweet_html .= $tweet_html_transient;
+                    }
 
-			}
-		}
+                }
+            }
+
+            $tweet_html .= '</div>';
+
+        }
 
 	}
 
