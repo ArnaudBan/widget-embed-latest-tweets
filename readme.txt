@@ -60,6 +60,11 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.6.3 =
+
+* fix : probleme with new tweet not showing
+Thank you Christof Rodejohann
+
 = 0.6.2 =
 
 * Check if the new Widget::is_preview method exist to avoid fatal error
