@@ -425,7 +425,7 @@ function welt_display_tweets( ){
 
 				$tweet_html_transient = get_transient('last_tweet_html_' . $tweet_id);
 
-				if( false === $tweet_html_transient ){
+                if( false === $tweet_html_transient || count($tweet_html_transient) <= 1){
 
 					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $instance );
 
