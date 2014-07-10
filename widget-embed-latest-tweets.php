@@ -430,7 +430,7 @@ function welt_display_tweets( ){
 					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $instance );
 
 					if( $tweet_html_transient ){
-						set_transient('last_tweet_html_' . $tweet_id, $tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
+						set_transient('last_tweet_html_' . $tweet_id, $tweet_html_transient, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
 						$tweet_html .= $tweet_html_transient;
 					}
 
