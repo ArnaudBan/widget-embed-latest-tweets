@@ -427,7 +427,7 @@ function welt_display_tweets( ){
 
 				if( false === $tweet_html_transient ){
 
-					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $options );
+					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $instance );
 
 					if( $tweet_html_transient ){
 						set_transient('last_tweet_html_' . $tweet_id, $tweet_html, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
