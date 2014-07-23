@@ -84,9 +84,9 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		if( !empty( $screen_name ) ){
 
-			if( method_exists('Widget', 'is_preview' ) && $this->is_preview() ){
+			$data = ' ';
+			if( method_exists('WP_Widget', 'is_preview' ) && $this->is_preview() ){
 
-				$data = ' ';
 				foreach ($instance as $key => $value) {
 
 					if( !empty( $value ) ){
@@ -94,12 +94,10 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 					}
 				}
 
-				echo "<div id='welt-{$this->id}' class='welt-tweet-wrapper'$data></div>";
-
-			} else {
-
-				echo "<div id='welt-{$this->id}' class='welt-tweet-wrapper'></div>";
 			}
+
+			echo "<div id='welt-{$this->id}' class='welt-tweet-wrapper'$data></div>";
+
 		}
 
 		echo $after_widget;
@@ -143,10 +141,11 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		$instance['lang'] = sanitize_text_field($new_instance['lang']);
 
 		// When everythings is check and we are not in the customizer, set the transient
-		if( ! method_exists('Widget', 'is_preview' ) || ! $this->is_preview() ){
-			welt_set_tweet_transient( $this->id, $instance , true );
-		}
+		if( ! method_exists('WP_Widget', 'is_preview' ) || ! $this->is_preview() ){
 
+				welt_set_tweet_transient( $this->id, $instance );
+
+		}
 
 		return $instance;
 	}
@@ -252,7 +251,6 @@ add_action('widgets_init', create_function('', 'register_widget( "Widget_Embed_L
 	*/
 function welt_set_tweet_transient( $widget_id, $options ){
 
-	$return_value = false;
 
 	$last_tweet = welt_get_latest_tweet( $options );
 
@@ -375,86 +373,106 @@ function welt_get_tweet_html( $tweet_id, $options ){
  */
 function welt_display_tweets( ){
 
-	$widget_id = $_POST['widget_id'];
+	$all_welt_widgets = $_POST['all_welt_widgets'];
 
-	$tweet_html = '';
+	$tweet_html = array();
 
-	// In preview mode we passe all instance in data html attrribut
-	if( isset( $_POST['widget_data'] ) && ! empty( $_POST['widget_data'] ) ){
+	foreach ($all_welt_widgets as $welt_widget ) {
 
-		$instance = $_POST['widget_data'];
+		$widget_id = $welt_widget['widget_id'];
+		$widget_data = isset( $welt_widget['widget_data'] ) && ! empty( $welt_widget['widget_data'] ) ? $welt_widget['widget_data'] : false;
 
-		$last_tweet = welt_get_latest_tweet( $instance );
+		$tweet_html[ $widget_id ] = '';
 
-		foreach ($last_tweet as $tweet_id) {
+		// In preview mode we passe all instance in data html attrribut
+		if( $widget_data ){
 
-			$tweet_html .= welt_get_tweet_html( $tweet_id, $instance );
+			$instance = $widget_data;
 
-		}
-
-
-	} else {
-
-
-		$last_tweet = get_transient('last_tweet_' . $widget_id);
-
-		if( false === $last_tweet ) {
-
-			// Get the widget instance
-			$all_instance_widget = get_option('widget_welt_last_tweets');
-
-			$widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
-
-			$instance = $all_instance_widget[$widget_real_id];
-
-
-			// Set the transient for this widget
 			$last_tweet = welt_get_latest_tweet( $instance );
-		}
-
-		if( $last_tweet && is_array( $last_tweet ) ){
-
-			set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
 
 			foreach ($last_tweet as $tweet_id) {
 
-				// retrocompatibility
-				if( is_object( $tweet_id ) ){
-					$tweet_id = $tweet_id->id_str;
-				}
-
-				$tweet_html_transient = get_transient('last_tweet_html_' . $tweet_id);
-
-				if( false === $tweet_html_transient ){
-
-					$tweet_html_transient = welt_get_tweet_html( $tweet_id, $instance );
-
-					if( $tweet_html_transient ){
-						set_transient('last_tweet_html_' . $tweet_id, $tweet_html_transient, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
-						$tweet_html .= $tweet_html_transient;
-					}
-
-				} else {
-
-					// retrocompatibility
-					if( is_object( $tweet_html_transient ) ){
-						$tweet_html_transient = $tweet_html_transient->html;
-					}
-					$tweet_html .= $tweet_html_transient;
-				}
+				$tweet_html[ $widget_id ] .= welt_get_tweet_html( $tweet_id, $instance );
 
 			}
-		}
 
+
+		} else {
+
+
+			$last_tweet = get_transient('last_tweet_' . $widget_id);
+
+			if( false === $last_tweet ) {
+
+				// Get the widget instance
+				$instance = $instance = welt_get_widget_instance( $widget_id );
+
+
+				// Set the transient for this widget
+				$last_tweet = welt_get_latest_tweet( $instance );
+			}
+
+			if( $last_tweet && is_array( $last_tweet ) ){
+
+				set_transient('last_tweet_' . $widget_id , $last_tweet, 60 * 5);
+
+				foreach ($last_tweet as $tweet_id) {
+
+					// retrocompatibility
+					if( is_object( $tweet_id ) ){
+						$tweet_id = $tweet_id->id_str;
+					}
+
+					$tweet_html_transient = get_transient('last_tweet_html_' . $tweet_id);
+
+					if( false === $tweet_html_transient ){
+
+						$instance = welt_get_widget_instance( $widget_id );
+
+						$tweet_html_transient = welt_get_tweet_html( $tweet_id, $instance );
+
+						if( $tweet_html_transient ){
+							set_transient('last_tweet_html_' . $tweet_id, $tweet_html_transient, ( 24 * WEEK_IN_SECONDS ) ); // 6 mouths
+							$tweet_html[ $widget_id ] .= $tweet_html_transient;
+						}
+
+					} else {
+
+						// retrocompatibility
+						if( is_object( $tweet_html_transient ) ){
+							$tweet_html_transient = $tweet_html_transient->html;
+						}
+						$tweet_html[ $widget_id ] .= $tweet_html_transient;
+					}
+
+				}
+			}
+
+		}
 	}
 
-	echo $tweet_html;
+
+	echo json_encode( $tweet_html );
 	die;
 }
 
 add_action('wp_ajax_welt_display_tweets', 'welt_display_tweets');
 add_action('wp_ajax_nopriv_welt_display_tweets', 'welt_display_tweets');
 
+
+/**
+ * Return the instance of a widget base on his id
+ */
+function welt_get_widget_instance( $widget_id ){
+
+	// Get the widget instance
+	$all_instance_widget = get_option('widget_welt_last_tweets');
+
+	$widget_real_id = str_replace('welt_last_tweets-', '', $widget_id);
+
+	return $all_instance_widget[$widget_real_id];
+}
 
 /**
  * Enqueue welt script and Twitter Script
