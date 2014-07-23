@@ -36,7 +36,6 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 			'maxwidth'         => '',
 			'align'            => 'none',
 			'hide_thread'      => true,
-			'lang'             => 'en',
 			'include_rts'      => true,
 			'hide_media'       => true,
 			'exclude_replies'  => false,
@@ -53,6 +52,12 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 						'Widget embed latest Tweets', // Name
 						array('description' => __('Show your latest Tweets', 'widget-embed-lastest-tweets'))// Args
 		);
+
+		if( defined( 'WPLANG' ) ){
+			$this->defaut['lang'] = substr( WPLANG, 0, 2 );
+		} else {
+			$this->defaut['lang'] = 'en';
+		}
 	}
 
 	/**
@@ -166,6 +171,8 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		// Are all the options there ?
 		if( is_array( $twitter_oauth_var ) && count($twitter_oauth_var) == 4 ){
+
+
 
 			?>
 			<p>
