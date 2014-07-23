@@ -60,10 +60,14 @@ No. Twitter says : This value [the width] is constrained to be between 250 and 5
 
 == Changelog ==
 
+= 0.6.4 =
+
+* Only one AJAX calls to get Tweet data ( Thank you Christof Rodejohann )
+* Some bugfix for the new widget preview in the customizer
+
 = 0.6.3 =
 
-* fix : probleme with new tweet not showing
-Thank you Christof Rodejohann
+* fix : probleme with new tweet not showing ( Thank you Christof Rodejohann )
 
 = 0.6.2 =
 
