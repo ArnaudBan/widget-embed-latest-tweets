@@ -76,18 +76,15 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		$instance = wp_parse_args($instance, $this->defaut);
 
-		extract($args);
-		extract($instance);
-
 		$title = apply_filters('widget_title', $instance['title']);
 
-		echo $before_widget;
+		echo $args['before_widget'];
 
 		if ( !empty( $title ) ){
-			echo $before_title . $title . $after_title;
+			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
-		if( !empty( $screen_name ) ){
+		if( !empty( $instance['screen_name'] ) ){
 
 			$data = ' ';
 			if( method_exists('WP_Widget', 'is_preview' ) && $this->is_preview() ){
@@ -105,7 +102,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 
 		}
 
-		echo $after_widget;
+		echo $args['after_widget'];
 	}
 
 	/**
