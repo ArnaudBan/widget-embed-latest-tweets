@@ -17,7 +17,7 @@ function welt_options_page_display() {
 	?>
 	<div class="wrap">
 
-		<h2>Widget Embed Latest Tweet</h2>
+		<h1>Widget Embed Latest Tweet</h1>
 
 		<form action="options.php" method="post">
 			<?php
