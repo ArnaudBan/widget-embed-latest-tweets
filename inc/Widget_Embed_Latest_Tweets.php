@@ -140,7 +140,7 @@ class Widget_Embed_Latest_Tweets extends WP_Widget {
 		$twitter_oauth_var = get_option( 'welt_twitter_oauth_var' );
 
 		// Are all the options there ?
-		if ( is_array( $twitter_oauth_var ) && count( $twitter_oauth_var ) == 4 ) {
+		if ( is_array( $twitter_oauth_var ) && count( $twitter_oauth_var ) == 2 ) {
 
 			$this->text_field( 'title', $instance['title'], __( 'Title' ) );
 			$this->text_field( 'screen_name', $instance['screen_name'], __( 'Twitter Username', 'widget-embed-lastest-tweets' ) );

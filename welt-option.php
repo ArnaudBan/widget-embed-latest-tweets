@@ -48,10 +48,8 @@ function welt_admin_init() {
 
 	//Register a settings field to a settings page and section.
 	//add_settings_field( $id, $title, $callback, $page, $section, $args );
-	add_settings_field('welt_twitter_consumer_key', 'API key', 'welt_twitter_consumer_key_display', 'welt_options_page', 'welt_twitter_oauth_section');
-	add_settings_field('welt_twitter_consumer_secret', 'API secret', 'welt_twitter_consumer_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
-	add_settings_field('welt_twitter_access_token', 'Access token', 'welt_twitter_access_token_display', 'welt_options_page', 'welt_twitter_oauth_section');
-	add_settings_field('welt_twitter_access_token_secret', 'Access token secret', 'welt_twitter_access_token_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
+	add_settings_field('welt_twitter_consumer_key', 'Consumer Key (API Key)', 'welt_twitter_consumer_key_display', 'welt_options_page', 'welt_twitter_oauth_section');
+	add_settings_field('welt_twitter_consumer_secret', 'Consumer Secret (API Secret)', 'welt_twitter_consumer_secret_display', 'welt_options_page', 'welt_twitter_oauth_section');
 }
 
 //Le text au dessus des options
@@ -69,10 +67,7 @@ function welt_twitter_oauth_section_text() {
 		<a href="https://dev.twitter.com/apps" title="dev Twitter apps">https://dev.twitter.com/apps</a>
 	</p>
 	<p>
-		<?php _e('Once your application is created ask to create an access token ( Click the blue button at the bottom of the page of your Twitter application ).', 'widget-embed-lastest-tweets') ?>
-	</p>
-	<p>
-		<?php _e('You should now have all the information asked bellow !', 'widget-embed-lastest-tweets') ?>
+		<?php _e('Go to the "Keys and Access Tokens" tab to find your Consumer Key and Secret', 'widget-embed-lastest-tweets'); ?>
 	</p>
 	<?php
 }
@@ -80,7 +75,7 @@ function welt_twitter_oauth_section_text() {
 function welt_twitter_consumer_key_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$consumer_key = isset( $twitter_oauth_var['consumer_key'] ) ? $twitter_oauth_var['consumer_key'] : '';
+	$consumer_key = isset( $twitter_oauth_var['consumer_key'] ) ? esc_attr( $twitter_oauth_var['consumer_key'] ) : '';
 
 	?>
 	<input id='welt_twitter_oauth_var[consumer_key]' name='welt_twitter_oauth_var[consumer_key]' type='text' value='<?php echo $consumer_key; ?>' class="widefat"/>
@@ -89,25 +84,9 @@ function welt_twitter_consumer_key_display() {
 function welt_twitter_consumer_secret_display() {
 
 	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$consumer_secret = isset( $twitter_oauth_var['consumer_secret'] ) ? $twitter_oauth_var['consumer_secret'] : '';
+	$consumer_secret = isset( $twitter_oauth_var['consumer_secret'] ) ? esc_attr( $twitter_oauth_var['consumer_secret'] ) : '';
 	?>
 	<input id='welt_twitter_oauth_var[consumer_secret]' name='welt_twitter_oauth_var[consumer_secret]' type='password' value='<?php echo $consumer_secret; ?>' class="widefat"/>
-	<?php
-}
-function welt_twitter_access_token_display() {
-
-	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$token_key = isset( $twitter_oauth_var['token_key'] ) ? $twitter_oauth_var['token_key'] : '';
-	?>
-	<input id='welt_twitter_oauth_var[token_key]' name='welt_twitter_oauth_var[token_key]' type='text' value='<?php echo $token_key; ?>' class="widefat"/>
-	<?php
-}
-function welt_twitter_access_token_secret_display() {
-
-	$twitter_oauth_var = get_option('welt_twitter_oauth_var');
-	$token_secret = isset( $twitter_oauth_var['token_secret'] ) ? $twitter_oauth_var['token_secret'] : '';
-	?>
-	<input id='welt_twitter_oauth_var[token_secret]' name='welt_twitter_oauth_var[token_secret]' type='text' value='<?php echo $token_secret; ?>' class="widefat"/>
 	<?php
 }
 
