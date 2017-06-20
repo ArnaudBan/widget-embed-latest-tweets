@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Widget embed latest Tweets\n"
-"POT-Creation-Date: 2016-01-07 13:38+0100\n"
+"POT-Creation-Date: 2017-06-20 17:23+0200\n"
 "PO-Revision-Date: 2016-01-07 13:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,108 +20,129 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: welt-option.php:47
-msgid "Twitter connection"
+#: inc/WP_Twitter_Oauth.php:30
+msgid "The class is not set properly!"
 msgstr ""
 
-#: welt-option.php:60
-msgid "Why"
+#: inc/WP_Twitter_Oauth.php:64
+msgid "Access granted ^^ !"
 msgstr ""
 
-#: welt-option.php:62
-msgid "Twitter's API version 1.1 require it"
-msgstr ""
-
-#: welt-option.php:65
-msgid "How"
-msgstr ""
-
-#: welt-option.php:68
+#: inc/WP_Twitter_Oauth.php:87
 msgid ""
-"Create a new application with your Twitter account. It is very simple, go to "
-"this page :"
+"Your credentials might be unset or incorrect or username is wrong. In any "
+"case this error is not due to Twitter API."
 msgstr ""
 
-#: welt-option.php:72
-msgid ""
-"Once your application is created ask to create an access token ( Click the "
-"blue button at the bottom of the page of your Twitter application )."
+#: inc/WP_Twitter_Oauth.php:91
+msgid "Rate limits are exceed!"
 msgstr ""
 
-#: welt-option.php:75
-msgid "You should now have all the information asked bellow !"
+#: inc/WP_Twitter_Oauth.php:97
+msgid "Twitter is overwhelmed or something bad happened with its API."
 msgstr ""
 
-#: widget-embed-latest-tweets.php:53
+#: inc/WP_Twitter_Oauth.php:101
+msgid "Something is wrong or missing. "
+msgstr ""
+
+#: inc/Widget_Embed_Latest_Tweets.php:30
 msgid "Show your latest Tweets"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:176
+#: inc/Widget_Embed_Latest_Tweets.php:145
 msgid "Title"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:181
+#: inc/Widget_Embed_Latest_Tweets.php:146
 msgid "Twitter Username"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:186
+#: inc/Widget_Embed_Latest_Tweets.php:148
 msgid "Number of Tweet to display"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:191
+#: inc/Widget_Embed_Latest_Tweets.php:149
 msgid "Width"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:194
+#: inc/Widget_Embed_Latest_Tweets.php:149
 msgid ""
 "Twitter says :This value is constrained to be between 250 and 550 pixels"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:199
-msgid "Alignment"
-msgstr ""
-
-#: widget-embed-latest-tweets.php:208
+#: inc/Widget_Embed_Latest_Tweets.php:151
 msgid "Hide Thread"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:211
+#: inc/Widget_Embed_Latest_Tweets.php:151
 msgid ""
 "Hide the original message in the case that the embedded Tweet is a reply"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:214
+#: inc/Widget_Embed_Latest_Tweets.php:152
 msgid "Hide Media"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:217
+#: inc/Widget_Embed_Latest_Tweets.php:152
 msgid "Hide the images in the Tweet"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:221
+#: inc/Widget_Embed_Latest_Tweets.php:153
 msgid "Exclude replies"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:224
+#: inc/Widget_Embed_Latest_Tweets.php:153
 msgid "They will not show but they will count in the number of tweets"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:228
+#: inc/Widget_Embed_Latest_Tweets.php:155
+msgid "Alignment"
+msgstr ""
+
+#: inc/Widget_Embed_Latest_Tweets.php:162
 msgid "Language"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:231
+#: inc/Widget_Embed_Latest_Tweets.php:169
 msgid "Two firsts caractere only. Example : \"fr\" for french"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:238
+#: inc/Widget_Embed_Latest_Tweets.php:176
 #, php-format
 msgid ""
 "You have to enter your <a href=\"%s\">Twitter connections information first</"
 "a>"
 msgstr ""
 
-#: widget-embed-latest-tweets.php:513
+#: welt-option.php:47
+msgid "Twitter connection"
+msgstr ""
+
+#: welt-option.php:58
+msgid "Why"
+msgstr ""
+
+#: welt-option.php:60
+msgid "Twitter's API version 1.1 require it"
+msgstr ""
+
+#: welt-option.php:63
+msgid "How"
+msgstr ""
+
+#: welt-option.php:66
+msgid ""
+"Create a new application with your Twitter account. It is very simple, go to "
+"this page :"
+msgstr ""
+
+#: welt-option.php:70
+msgid ""
+"Go to the \"Keys and Access Tokens\" tab to find your Consumer Key and Secret"
+msgstr ""
+
+#: widget-embed-latest-tweets.php:166
 msgid "Settings"
 msgstr ""
 

@@ -27,7 +27,7 @@ class WP_Twitter_Oauth {
 
 		} else {
 
-			return __( 'The class is not set properly!', 'ttm' );
+			return __( 'The class is not set properly!', 'widget-embed-lastest-tweets' );
 
 		}
 
@@ -61,7 +61,7 @@ class WP_Twitter_Oauth {
 			$keys = json_decode( wp_remote_retrieve_body( $call ) );
 			update_option( md5( $this->consumer_key . $this->consumer_secret ) . '_twitter_access_token', $keys->access_token );
 
-			return __( 'Access granted ^^ !', 'ttm' );
+			return __( 'Access granted ^^ !', 'widget-embed-lastest-tweets' );
 		} else {
 
 			return $this->check_http_code( wp_remote_retrieve_response_code( $call ) );
@@ -84,21 +84,21 @@ class WP_Twitter_Oauth {
 			case '403':
 			case '404':
 			case '406':
-				$error = '<div class="error">' . __( 'Your credentials might be unset or incorrect or username is wrong. In any case this error is not due to Twitter API.', 'ttm' ) . '</div>';
+				$error = '<div class="error">' . __( 'Your credentials might be unset or incorrect or username is wrong. In any case this error is not due to Twitter API.', 'widget-embed-lastest-tweets' ) . '</div>';
 				break;
 
 			case '429':
-				$error = '<div class="error">' . __( 'Rate limits are exceed!', 'ttm' ) . '</div>';
+				$error = '<div class="error">' . __( 'Rate limits are exceed!', 'widget-embed-lastest-tweets' ) . '</div>';
 				break;
 
 			case '500':
 			case '502':
 			case '503':
-				$error = '<div class="error">' . __( 'Twitter is overwhelmed or something bad happened with its API.', 'ttm' ) . '</div>';
+				$error = '<div class="error">' . __( 'Twitter is overwhelmed or something bad happened with its API.', 'widget-embed-lastest-tweets' ) . '</div>';
 				break;
 
 			default:
-				$error = '<div class="error">' . __( 'Something is wrong or missing. ', 'ttm' ) . '</div>';
+				$error = '<div class="error">' . __( 'Something is wrong or missing. ', 'widget-embed-lastest-tweets' ) . '</div>';
 
 		}
 
