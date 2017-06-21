@@ -138,15 +138,14 @@ function welt_get_widget_instance( $widget_id ) {
  */
 function welt_enqueue_scripts() {
 	// welt
-	wp_register_script( 'welt_twitter_script', '//platform.twitter.com/widgets.js', array(), '1.1', TRUE );
+	wp_register_script( 'welt_twitter_script', 'https://platform.twitter.com/widgets.js', array(), '1.1', true );
 	wp_register_script( 'welt_script', plugins_url( '/js/welt-scripts.js', __FILE__ ), array(
-		'jquery',
 		'welt_twitter_script'
-	), '20140723', TRUE );
+	), '0.7', true );
 
 }
 
-add_action( 'wp_enqueue_scripts', 'welt_enqueue_scripts' );
+add_action( 'wp_enqueue_scripts', 'welt_enqueue_scripts', 20 );
 
 function welt_plugin_init() {
 

@@ -3,45 +3,56 @@
  * The script to load tweet in ajax
  */
 
-jQuery(document).ready( function(){
+var weltGetTheWidgetContent =  function(){
 
-	var all_welt_widgets = [];
+	var postParam = 'action=welt_display_tweets';
 
-	jQuery('.welt-tweet-wrapper').each( function(){
+	var weltTweetWrapper = document.querySelectorAll( '.welt-tweet-wrapper' );
+    weltTweetWrapper.forEach( function( current_widget, index ){
 
-		var current_widget = jQuery(this);
+        var widget_id = current_widget.getAttribute('id');
+        var widget_data = current_widget.dataset;
+        widget_id = widget_id.replace('welt-', '');
 
-		var widget_id = current_widget.attr('id');
-		var widget_data = current_widget.data();
-		widget_id = widget_id.replace('welt-', '');
+        postParam += "&all_welt_widgets["+ index +"][widget_id]=" + widget_id;
 
-		all_welt_widgets.push( { widget_id : widget_id, widget_data : widget_data } );
+        if( widget_data ){
 
-	});
+            for( var key in widget_data ){
+
+                postParam += "&all_welt_widgets["+ index +"][widget_data]["+ key +"]=" + widget_data[key];
+
+            }
+        }
+    });
 
 
-	var data = {
-		action: 'welt_display_tweets',
-		all_welt_widgets: all_welt_widgets,
-	};
 
-	jQuery.post(
-		weltAjaxurl,
-		data,
-		function(response) {
+    var request = new XMLHttpRequest();
+    request.open('POST', weltAjaxurl, true);
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-			if( response ){
-				response = JSON.parse( response );
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+            // Success!
+            var response = JSON.parse(request.responseText);
 
-				for( var i in response ){
+            for( var i in response ){
 
-					var widget_selector =  '#welt-' + i;
-					jQuery( widget_selector ).append( response[i] );
-				}
+                if( response.hasOwnProperty( i ) ){
 
-				twttr.widgets.load();
-			}
-		}
-	);
-});
+                    var widget_selector =  'welt-' + i;
+                    var widget = document.getElementById( widget_selector );
+                    widget.innerHTML = response[i];
+                }
+
+            }
+
+            window.twttr.widgets.load();
+        }
+    };
+
+    request.send( postParam );
+
+}();
 
